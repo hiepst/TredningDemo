@@ -1,0 +1,110 @@
+package cs.trend.demo;
+
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
+import cs.util.ui.UiUtil;
+
+public class TabView extends JPanel {
+
+	private static final long serialVersionUID = 2015090701;
+
+	private JPanel bottomRightPanel;
+
+	private JSplitPane mainSplitPane;
+
+	private JSplitPane rightSplitPane;
+
+	private TrendPanel trendPanel;
+
+	private ConfigurationPanel configurationPanel;
+
+	public TrendPanel getTrendPanel() {
+		return trendPanel;
+	}
+
+	public ConfigurationPanel getConfigurationPanel() {
+		return configurationPanel;
+	}
+
+	public void init() {
+		trendPanel = new TrendPanel();
+		trendPanel.init();
+
+		configurationPanel = new ConfigurationPanel();
+		configurationPanel.init();
+		JPanel leftPanel = new JPanel(new BorderLayout());
+		leftPanel.add(configurationPanel, BorderLayout.NORTH);
+
+		bottomRightPanel = new JPanel(new BorderLayout());
+
+		rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
+				trendPanel, bottomRightPanel);
+		rightSplitPane.setOneTouchExpandable(true);
+		rightSplitPane.setResizeWeight(1.0);
+
+		mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
+				leftPanel, rightSplitPane);
+		mainSplitPane.setOneTouchExpandable(true);
+
+		this.setLayout(new BorderLayout());
+		this.add(mainSplitPane, BorderLayout.CENTER);
+	}
+
+	public JPanel getBottomRightPanel() {
+		return bottomRightPanel;
+	}
+
+	public JSplitPane getMainSplitPane() {
+		return mainSplitPane;
+	}
+
+	public JSplitPane getRightSplitPane() {
+		return rightSplitPane;
+	}
+
+	/**
+	 * Create the GUI and show it. For thread safety, this method should be
+	 * invoked from the event-dispatching thread.
+	 */
+	private static void createAndShowGUI() {
+		try {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (Exception e) {
+			// If Nimbus is not available, you can set the GUI to another look
+			// and feel.
+		}
+
+		// Create and set up the window.
+		JFrame frame = new JFrame("Tab View");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		TabView tabView = new TabView();
+		tabView.init();
+
+		frame.getContentPane().add(tabView, BorderLayout.CENTER);
+
+		// Display the window.
+		UiUtil.centerAndShow(frame);
+	}
+
+	public static void main(String[] args) {
+		// Schedule a job for the event-dispatching thread:
+		// creating and showing this application's GUI.
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
+			public void run() {
+				createAndShowGUI();
+			}
+		});
+	}
+}
