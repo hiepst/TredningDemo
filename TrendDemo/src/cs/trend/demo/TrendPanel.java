@@ -43,7 +43,11 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 
 	private XYItemRenderer separatePlotRenderer;
 
-	private DataSetDao dao;
+	private DatasetDao dao;
+
+	public void setDao(DatasetDao dao) {
+		this.dao = dao;
+	}
 
 	private Marker warningUpperLimit;
 
@@ -63,7 +67,6 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 				Color.red, false);
 		plotDifferenceRenderer.setRoundXCoordinates(true);
 
-		dao = new DataSetDao();
 		dao.setOutOfLimitListener(this);
 
 		this.dataset = dao.getDataSet();
@@ -127,7 +130,8 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 	}
 
 	private void addLimitMarkers() {
-		warningUpperLimit = new ValueMarker(DataSetDao.NOMINAL_HOT_1_TEMP + 2);
+		warningUpperLimit = new ValueMarker(
+				CsvDataSetDao.NOMINAL_HOT_1_TEMP + 2);
 		warningUpperLimit.setLabelOffsetType(LengthAdjustmentType.EXPAND);
 		warningUpperLimit.setPaint(Color.yellow);
 		warningUpperLimit.setStroke(new BasicStroke(2.0f));
@@ -138,7 +142,7 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 		warningUpperLimit.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
 		plot.addRangeMarker(warningUpperLimit);
 
-		severeUpperLimit = new ValueMarker(DataSetDao.NOMINAL_HOT_1_TEMP + 4);
+		severeUpperLimit = new ValueMarker(CsvDataSetDao.NOMINAL_HOT_1_TEMP + 4);
 		severeUpperLimit.setLabelOffsetType(LengthAdjustmentType.EXPAND);
 		severeUpperLimit.setPaint(Color.red);
 		severeUpperLimit.setStroke(new BasicStroke(2.0f));
@@ -149,7 +153,8 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 		severeUpperLimit.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
 		plot.addRangeMarker(severeUpperLimit);
 
-		warningLowerLimit = new ValueMarker(DataSetDao.NOMINAL_HOT_1_TEMP - 2);
+		warningLowerLimit = new ValueMarker(
+				CsvDataSetDao.NOMINAL_HOT_1_TEMP - 2);
 		warningLowerLimit.setLabelOffsetType(LengthAdjustmentType.EXPAND);
 		warningLowerLimit.setPaint(Color.yellow);
 		warningLowerLimit.setStroke(new BasicStroke(2.0f));
@@ -160,7 +165,7 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 		warningLowerLimit.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
 		plot.addRangeMarker(warningLowerLimit);
 
-		severeLowerLimit = new ValueMarker(DataSetDao.NOMINAL_HOT_1_TEMP - 4);
+		severeLowerLimit = new ValueMarker(CsvDataSetDao.NOMINAL_HOT_1_TEMP - 4);
 		severeLowerLimit.setLabelOffsetType(LengthAdjustmentType.EXPAND);
 		severeLowerLimit.setPaint(Color.red);
 		severeLowerLimit.setStroke(new BasicStroke(2.0f));

@@ -1,6 +1,8 @@
 package cs.trend.demo;
 
 import java.awt.BorderLayout;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -31,14 +33,22 @@ public class TabView extends JPanel {
 		return configurationPanel;
 	}
 
+	private DatasetDao dao;
+
+	public void setDao(DatasetDao dao) {
+		this.dao = dao;
+	}
+
 	public void init() {
 		trendPanel = new TrendPanel();
+		trendPanel.setDao(dao);
 		trendPanel.init();
 
 		configurationPanel = new ConfigurationPanel();
 		configurationPanel.init();
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		leftPanel.add(configurationPanel, BorderLayout.NORTH);
+		leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		bottomRightPanel = new JPanel(new BorderLayout());
 

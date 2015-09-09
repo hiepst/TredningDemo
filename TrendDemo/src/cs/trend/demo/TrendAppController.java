@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import cs.framework.ButtonTabComponent;
 import cs.util.ui.UiUtil;
@@ -39,6 +41,7 @@ public class TrendAppController {
 	}
 
 	public void init() {
+
 		trendAppView = new TrendAppView();
 		trendAppView.init();
 
@@ -46,8 +49,10 @@ public class TrendAppController {
 
 		initOpenMenuItem();
 		initSaveMenuItem();
+		initSaveAsMenuItem();
 		intNewTabMenuItem();
 		initNewWindowMenuItem();
+		initExportToCsvMenuItem();
 
 		tabbedPane = trendAppView.getTabbedPane();
 		addTab();
@@ -57,6 +62,8 @@ public class TrendAppController {
 
 	public void addTab() {
 		TabViewController tabViewController = new TabViewController();
+		tabViewController
+				.setDao(new CsvDataSetDao("res/ScienceData_FLIGHT.csv"));
 		tabViewController.init();
 
 		tabbedPane.add("Tab " + (tabCounter + 1), tabViewController.getView());
@@ -104,9 +111,40 @@ public class TrendAppController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				fileChooser.setDialogTitle("Saving a Trend");
+				fileChooser.setFileFilter(new FileNameExtensionFilter(
+						"Trend Files", "trd"));
 				fileChooser.showSaveDialog(trendAppView);
 			}
 		});
+	}
+
+	private void initSaveAsMenuItem() {
+		menuBar.getSaveAsMenuItem().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				fileChooser.setDialogTitle("Saving As Another Trend");
+				fileChooser.setFileFilter(new FileNameExtensionFilter(
+						"Trend Files", "trd"));
+				fileChooser.showSaveDialog(trendAppView);
+			}
+		});
+	}
+
+	private void initExportToCsvMenuItem() {
+		menuBar.getExportToCsvMenuItem().addActionListener(
+				new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						fileChooser.setDialogTitle("Exporting to CSV file");
+						fileChooser.setFileFilter(new FileNameExtensionFilter(
+								"CSV Files", "csv"));
+						fileChooser.showSaveDialog(trendAppView);
+					}
+				});
 	}
 
 	private void initOpenMenuItem() {
@@ -116,6 +154,8 @@ public class TrendAppController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				fileChooser.setDialogTitle("Selecting a Trend to Open");
+				fileChooser.setFileFilter(new FileNameExtensionFilter(
+						"Trend Files", "trd"));
 				fileChooser.showOpenDialog(trendAppView);
 			}
 		});

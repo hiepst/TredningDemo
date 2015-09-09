@@ -8,13 +8,9 @@ import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
-public class DataSetDao {
+public class CsvDataSetDao implements DatasetDao {
 
 	OutOfLimitListener outOfLimitListener;
-
-	public void setOutOfLimitListener(OutOfLimitListener outOfLimitListener) {
-		this.outOfLimitListener = outOfLimitListener;
-	}
 
 	private static final int MAX_DATA_ITEMS = 1000;
 
@@ -66,20 +62,27 @@ public class DataSetDao {
 
 	public static final int CAS1_HOT1_TEMP_INDEX = 56;
 
-	public DataSetDao() {
-		csvReader = new CSVReader("res/ScienceData_FLIGHT.csv");
+	public CsvDataSetDao(String fileName) {
+		csvReader = new CSVReader(fileName);
 		hot1TempData = csvReader.getDoubleData(CAS1_HOT1_TEMP_INDEX,
 				MAX_DATA_ITEMS);
 		hot2TempData = csvReader.getDoubleData(CAS1_HOT2_TEMP_INDEX,
 				MAX_DATA_ITEMS);
 	}
 
+	@Override
+	public void setOutOfLimitListener(OutOfLimitListener outOfLimitListener) {
+		this.outOfLimitListener = outOfLimitListener;
+	}
+
+	@Override
 	public TimeSeriesCollection getDataSet() {
 		// addLimitSeries();
 
 		return dataset;
 	}
 
+	@Override
 	public TimeSeriesCollection getDataSet(CassetteDataPoint dataPoint) {
 		// addLimitSeries();
 
@@ -88,6 +91,7 @@ public class DataSetDao {
 		return dataset;
 	}
 
+	@Override
 	public void removeSeries() {
 		int seriesCount = dataset.getSeriesCount();
 		if (seriesCount == 0) {
@@ -97,6 +101,7 @@ public class DataSetDao {
 
 	}
 
+	@Override
 	public void addSeries(CassetteDataPoint dataPoint) {
 
 		switch (dataPoint) {
@@ -139,6 +144,7 @@ public class DataSetDao {
 		}
 	}
 
+	@Override
 	public void addDatas() {
 		Second now = new Second();
 		System.out.println("Now = " + now.toString());
@@ -154,6 +160,7 @@ public class DataSetDao {
 		addData(CassetteDataPoint.HOT_2_TEMP);
 	}
 
+	@Override
 	public void addData(CassetteDataPoint dataPoint) {
 		double value;
 
@@ -237,4 +244,5 @@ public class DataSetDao {
 
 		return dev;
 	}
+
 }

@@ -24,8 +24,15 @@ public class TabViewController {
 		return tabView;
 	}
 
+	private DatasetDao dao;
+
+	public void setDao(DatasetDao dao) {
+		this.dao = dao;
+	}
+
 	public void init() {
 		tabView = new TabView();
+		tabView.setDao(dao);
 		tabView.init();
 
 		configurationPanel = tabView.getConfigurationPanel();

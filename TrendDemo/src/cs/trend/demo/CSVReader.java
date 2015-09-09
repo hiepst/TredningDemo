@@ -7,9 +7,48 @@ import java.io.IOException;
 
 public class CSVReader {
 
-	public static final int CAS1_HOT2_TEMP_INDEX = 66;
+	// Hot 1 temperature indexes.
 
 	public static final int CAS1_HOT1_TEMP_INDEX = 56;
+
+	public static final int CAS2_HOT1_TEMP_INDEX = 57;
+
+	public static final int CAS3_HOT1_TEMP_INDEX = 58;
+
+	public static final int CAS4_HOT1_TEMP_INDEX = 59;
+
+	public static final int CAS5_HOT1_TEMP_INDEX = 60;
+
+	public static final int CAS6_HOT1_TEMP_INDEX = 61;
+
+	public static final int CAS7_HOT1_TEMP_INDEX = 62;
+
+	public static final int CAS8_HOT1_TEMP_INDEX = 63;
+
+	public static final int CAS9_HOT1_TEMP_INDEX = 64;
+
+	public static final int CAS10_HOT1_TEMP_INDEX = 65;
+
+	// Hot 2 temperature indexes
+	public static final int CAS1_HOT2_TEMP_INDEX = 66;
+
+	public static final int CAS2_HOT2_TEMP_INDEX = 67;
+
+	public static final int CAS3_HOT2_TEMP_INDEX = 68;
+
+	public static final int CAS4_HOT2_TEMP_INDEX = 69;
+
+	public static final int CAS5_HOT2_TEMP_INDEX = 70;
+
+	public static final int CAS6_HOT2_TEMP_INDEX = 71;
+
+	public static final int CAS7_HOT2_TEMP_INDEX = 72;
+
+	public static final int CAS8_HOT2_TEMP_INDEX = 73;
+
+	public static final int CAS9_HOT2_TEMP_INDEX = 74;
+
+	public static final int CAS10_HOT2_TEMP_INDEX = 75;
 
 	private String csvFile;
 
@@ -20,9 +59,9 @@ public class CSVReader {
 	public static void main(String[] args) {
 
 		CSVReader reader = new CSVReader("res/ScienceData_FLIGHT.csv");
-		reader.getDoubleData(CAS1_HOT1_TEMP_INDEX, 10);
+		reader.getDoubleData(CAS3_HOT1_TEMP_INDEX, 10);
 		System.out.println();
-		reader.getDoubleData(CAS1_HOT2_TEMP_INDEX, 10);
+		reader.getDoubleData(CAS3_HOT2_TEMP_INDEX, 10);
 	}
 
 	public double[] getDoubleData(int index, int itemCount) {
