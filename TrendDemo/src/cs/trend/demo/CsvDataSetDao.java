@@ -26,23 +26,17 @@ public class CsvDataSetDao implements DatasetDao {
 
 	private TimeSeriesCollection dataset = new TimeSeriesCollection();
 
-	private TimeSeries hot1Temp = new TimeSeries(
-			CassetteDataPoint.HOT_1_TEMP.toString(), Second.class);
+	private TimeSeries hot1Temp = new TimeSeries(CassetteDataPoint.HOT_1_TEMP.toString(), Second.class);
 
-	private TimeSeries hot2Temp = new TimeSeries(
-			CassetteDataPoint.HOT_2_TEMP.toString(), Second.class);
+	private TimeSeries hot2Temp = new TimeSeries(CassetteDataPoint.HOT_2_TEMP.toString(), Second.class);
 
-	private TimeSeries cold1Temp = new TimeSeries(
-			CassetteDataPoint.COLD_1_TEMP.toString(), Second.class);
+	private TimeSeries cold1Temp = new TimeSeries(CassetteDataPoint.COLD_1_TEMP.toString(), Second.class);
 
-	private TimeSeries cold2Temp = new TimeSeries(
-			CassetteDataPoint.COLD_2_TEMP.toString(), Second.class);
+	private TimeSeries cold2Temp = new TimeSeries(CassetteDataPoint.COLD_2_TEMP.toString(), Second.class);
 
-	private TimeSeries coldSetPoint = new TimeSeries(
-			CassetteDataPoint.COLD_SET_POINT.toString(), Second.class);
+	private TimeSeries coldSetPoint = new TimeSeries(CassetteDataPoint.COLD_SET_POINT.toString(), Second.class);
 
-	private TimeSeries hot1SetPoint = new TimeSeries(
-			CassetteDataPoint.HOT_1_SET_POINT.toString(), Second.class);
+	private TimeSeries hot1SetPoint = new TimeSeries(CassetteDataPoint.HOT_1_SET_POINT.toString(), Second.class);
 
 	private Instant beginning = Instant.now();
 
@@ -64,10 +58,8 @@ public class CsvDataSetDao implements DatasetDao {
 
 	public CsvDataSetDao(String fileName) {
 		csvReader = new CSVReader(fileName);
-		hot1TempData = csvReader.getDoubleData(CAS1_HOT1_TEMP_INDEX,
-				MAX_DATA_ITEMS);
-		hot2TempData = csvReader.getDoubleData(CAS1_HOT2_TEMP_INDEX,
-				MAX_DATA_ITEMS);
+		hot1TempData = csvReader.getDoubleData(CAS1_HOT1_TEMP_INDEX, MAX_DATA_ITEMS);
+		hot2TempData = csvReader.getDoubleData(CAS1_HOT2_TEMP_INDEX, MAX_DATA_ITEMS);
 	}
 
 	@Override
@@ -83,10 +75,10 @@ public class CsvDataSetDao implements DatasetDao {
 	}
 
 	@Override
-	public TimeSeriesCollection getDataSet(CassetteDataPoint dataPoint) {
+	public TimeSeriesCollection getDataSet(Source source, CassetteDataPoint dataPoint) {
 		// addLimitSeries();
 
-		addSeries(dataPoint);
+		addSeries(source, dataPoint);
 
 		return dataset;
 	}
@@ -102,7 +94,7 @@ public class CsvDataSetDao implements DatasetDao {
 	}
 
 	@Override
-	public void addSeries(CassetteDataPoint dataPoint) {
+	public void addSeries(Source source, CassetteDataPoint dataPoint) {
 
 		switch (dataPoint) {
 		case COLD_1_TEMP:
@@ -152,16 +144,16 @@ public class CsvDataSetDao implements DatasetDao {
 		// addColdTempLimits();
 		// addHotTempLimits();
 
-		addData(CassetteDataPoint.COLD_1_TEMP);
-		addData(CassetteDataPoint.COLD_2_TEMP);
-		addData(CassetteDataPoint.COLD_SET_POINT);
-		addData(CassetteDataPoint.HOT_1_SET_POINT);
-		addData(CassetteDataPoint.HOT_1_TEMP);
-		addData(CassetteDataPoint.HOT_2_TEMP);
+		addData(Source.CAS_1, CassetteDataPoint.COLD_1_TEMP);
+		addData(Source.CAS_1, CassetteDataPoint.COLD_2_TEMP);
+		addData(Source.CAS_1, CassetteDataPoint.COLD_SET_POINT);
+		addData(Source.CAS_1, CassetteDataPoint.HOT_1_SET_POINT);
+		addData(Source.CAS_1, CassetteDataPoint.HOT_1_TEMP);
+		addData(Source.CAS_1, CassetteDataPoint.HOT_2_TEMP);
 	}
 
 	@Override
-	public void addData(CassetteDataPoint dataPoint) {
+	public void addData(Source source, CassetteDataPoint dataPoint) {
 		double value;
 
 		switch (dataPoint) {
@@ -187,8 +179,7 @@ public class CsvDataSetDao implements DatasetDao {
 
 		case HOT_1_TEMP:
 			value = hot1TempData[dataCount];
-			System.out.println("Item count = " + dataCount + " - Value = "
-					+ value);
+			System.out.println("Item count = " + dataCount + " - Value = " + value);
 
 			Random random = new Random();
 
@@ -198,8 +189,7 @@ public class CsvDataSetDao implements DatasetDao {
 				// trigger out of limit value
 				value = NOMINAL_HOT_1_TEMP + 3;
 				if (outOfLimitListener != null) {
-					outOfLimitListener.outOfLimitPerform(now,
-							now.plusMillis(2000), value);
+					outOfLimitListener.outOfLimitPerform(now, now.plusMillis(2000), value);
 				}
 			}
 
@@ -208,8 +198,7 @@ public class CsvDataSetDao implements DatasetDao {
 
 		case HOT_2_TEMP:
 			value = hot2TempData[dataCount];
-			System.out.println("Item count = " + dataCount + " - Value = "
-					+ value);
+			System.out.println("Item count = " + dataCount + " - Value = " + value);
 
 			hot2Temp.add(new Second(), value);
 			break;

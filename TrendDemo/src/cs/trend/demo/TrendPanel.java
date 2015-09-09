@@ -61,8 +61,7 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 	public void init() {
 		valueMarkers = new ArrayList<ValueMarker>();
 
-		plotDifferenceRenderer = new XYDifferenceRenderer(Color.green,
-				Color.red, false);
+		plotDifferenceRenderer = new XYDifferenceRenderer(Color.green, Color.red, false);
 		plotDifferenceRenderer.setRoundXCoordinates(true);
 
 		dao.setOutOfLimitListener(this);
@@ -76,7 +75,7 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 				true, // create legend?
 				true, // generate tooltips?
 				false // generate URLs?
-				);
+		);
 		chart.setBorderPaint(Color.black);
 		chart.setBorderVisible(true);
 		chart.setBackgroundPaint(Color.white);
@@ -140,6 +139,21 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 		plot.addRangeMarker(marker);
 	}
 
+	public void removeLimitMarkers(int count) {
+		int size = valueMarkers.size();
+		if (size <= 0) {
+			return;
+		}
+
+		for (int i = 1; i <= count; i++) {
+			ValueMarker valueMarker = valueMarkers.get(size - i);
+			if (valueMarker != null) {
+				plot.removeRangeMarker(valueMarker);
+				valueMarkers.remove(valueMarker);
+			}
+		}
+	}
+
 	private void configRangeAxis() {
 		ValueAxis rangeAxis = plot.getRangeAxis();
 		rangeAxis.setFixedAutoRange(14);
@@ -183,12 +197,12 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 	}
 
 	@Override
-	public void addPlot(CassetteDataPoint dataPoint) {
+	public void addPlot(Source source, CassetteDataPoint dataPoint) {
 		if (dataPoint == null) {
 			return;
 		}
 
-		dao.addSeries(dataPoint);
+		dao.addSeries(source, dataPoint);
 	}
 
 	@Override
@@ -198,8 +212,7 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 
 	@Override
 	public void outOfLimitPerform(Instant begin, Instant end, double value) {
-		Marker cooling = new IntervalMarker(begin.getNano() * 1000,
-				end.getNano() * 1000);
+		Marker cooling = new IntervalMarker(begin.getNano() * 1000, end.getNano() * 1000);
 		cooling.setLabelOffsetType(LengthAdjustmentType.EXPAND);
 		cooling.setPaint(Color.orange);
 		cooling.setLabel("Out Of Limit");

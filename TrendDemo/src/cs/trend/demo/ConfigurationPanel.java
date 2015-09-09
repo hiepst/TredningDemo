@@ -29,6 +29,11 @@ public class ConfigurationPanel extends JPanel {
 
 	private JComboBox<Source> sourceCombo;
 
+	
+	public JComboBox<Source> getSourceCombo() {
+		return sourceCombo;
+	}
+
 	private JComboBox<CassetteDataPoint> dataPointCombo;
 
 	private JButton startButton;

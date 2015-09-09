@@ -1,6 +1,7 @@
 package cs.trend.demo;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -61,6 +62,7 @@ public class TrendAppView extends JPanel {
 		TrendAppView trendAppView = new TrendAppView();
 		trendAppView.init();
 
+		frame.getContentPane().setPreferredSize(new Dimension(400, 400));
 		frame.getContentPane().add(trendAppView, BorderLayout.CENTER);
 
 		// Display the window.

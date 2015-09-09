@@ -99,6 +99,7 @@ public class TabView extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		TabView tabView = new TabView();
+		tabView.setDao(new CsvDataSetDao("res/ScienceData_FLIGHT.csv"));
 		tabView.init();
 
 		frame.getContentPane().add(tabView, BorderLayout.CENTER);

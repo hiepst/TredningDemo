@@ -12,14 +12,14 @@ public interface DemoPanel {
 
 	JPanel getComponent();
 
-	void addPlot(CassetteDataPoint dataPoint);
+	void addPlot(Source source, CassetteDataPoint dataPoint);
 
 	void removePLot();
 
 	public void setDomainRange(int minutes);
-	
+
 	void showPlotDifference();
-		
+
 	void showPlotsSeparately();
 
 	int getPlotCount();

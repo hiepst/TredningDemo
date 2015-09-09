@@ -25,7 +25,7 @@ public abstract class AbstractDemoPanel implements DemoPanel {
 	@Override
 	public void setDomainRange(int minutes) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public abstract class AbstractDemoPanel implements DemoPanel {
 	}
 
 	@Override
-	public void addPlot(CassetteDataPoint dataPoint) {
+	public void addPlot(Source source, CassetteDataPoint dataPoint) {
 		// TODO Auto-generated method stub
 
 	}
