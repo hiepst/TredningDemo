@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -49,20 +51,16 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 		this.dao = dao;
 	}
 
-	private Marker warningUpperLimit;
-
-	private Marker severeUpperLimit;
-
-	private Marker warningLowerLimit;
-
-	private Marker severeLowerLimit;
-
 	private XYDifferenceRenderer plotDifferenceRenderer;
 
 	private JFreeChart chart;
 
+	private List<ValueMarker> valueMarkers;
+
 	@SuppressWarnings("deprecation")
 	public void init() {
+		valueMarkers = new ArrayList<ValueMarker>();
+
 		plotDifferenceRenderer = new XYDifferenceRenderer(Color.green,
 				Color.red, false);
 		plotDifferenceRenderer.setRoundXCoordinates(true);
@@ -89,8 +87,6 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 		plot.setRangeGridlinePaint(Color.white);
 		plot.setDomainPannable(true);
 		plot.setRangePannable(true);
-
-		addLimitMarkers();
 
 		separatePlotRenderer = plot.getRenderer(0);
 		separatePlotRenderer.setSeriesPaint(0, Color.green);
@@ -129,52 +125,19 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 		axis.setFixedAutoRange(minutes * 60000.0); // 5 * 60 seconds
 	}
 
-	private void addLimitMarkers() {
-		warningUpperLimit = new ValueMarker(
-				CsvDataSetDao.NOMINAL_HOT_1_TEMP + 2);
-		warningUpperLimit.setLabelOffsetType(LengthAdjustmentType.EXPAND);
-		warningUpperLimit.setPaint(Color.yellow);
-		warningUpperLimit.setStroke(new BasicStroke(2.0f));
-		warningUpperLimit.setLabel("Warning Limit");
-		warningUpperLimit.setLabelFont(new Font("SansSerif", Font.PLAIN, 11));
-		warningUpperLimit.setLabelPaint(Color.yellow);
-		warningUpperLimit.setLabelAnchor(RectangleAnchor.TOP_LEFT);
-		warningUpperLimit.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
-		plot.addRangeMarker(warningUpperLimit);
+	public void addLimitMarker(String label, Color color, double value) {
+		ValueMarker marker = new ValueMarker(value);
+		marker.setLabelOffsetType(LengthAdjustmentType.EXPAND);
+		marker.setPaint(color);
+		marker.setStroke(new BasicStroke(2.0f));
+		marker.setLabel(label);
+		marker.setLabelFont(new Font("SansSerif", Font.PLAIN, 11));
+		marker.setLabelPaint(color);
+		marker.setLabelAnchor(RectangleAnchor.TOP_LEFT);
+		marker.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
 
-		severeUpperLimit = new ValueMarker(CsvDataSetDao.NOMINAL_HOT_1_TEMP + 4);
-		severeUpperLimit.setLabelOffsetType(LengthAdjustmentType.EXPAND);
-		severeUpperLimit.setPaint(Color.red);
-		severeUpperLimit.setStroke(new BasicStroke(2.0f));
-		severeUpperLimit.setLabel("Severe Limit");
-		severeUpperLimit.setLabelFont(new Font("SansSerif", Font.PLAIN, 11));
-		severeUpperLimit.setLabelPaint(Color.red);
-		severeUpperLimit.setLabelAnchor(RectangleAnchor.TOP_LEFT);
-		severeUpperLimit.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
-		plot.addRangeMarker(severeUpperLimit);
-
-		warningLowerLimit = new ValueMarker(
-				CsvDataSetDao.NOMINAL_HOT_1_TEMP - 2);
-		warningLowerLimit.setLabelOffsetType(LengthAdjustmentType.EXPAND);
-		warningLowerLimit.setPaint(Color.yellow);
-		warningLowerLimit.setStroke(new BasicStroke(2.0f));
-		warningLowerLimit.setLabel("Warning Limit");
-		warningLowerLimit.setLabelFont(new Font("SansSerif", Font.PLAIN, 11));
-		warningLowerLimit.setLabelPaint(Color.yellow);
-		warningLowerLimit.setLabelAnchor(RectangleAnchor.TOP_LEFT);
-		warningLowerLimit.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
-		plot.addRangeMarker(warningLowerLimit);
-
-		severeLowerLimit = new ValueMarker(CsvDataSetDao.NOMINAL_HOT_1_TEMP - 4);
-		severeLowerLimit.setLabelOffsetType(LengthAdjustmentType.EXPAND);
-		severeLowerLimit.setPaint(Color.red);
-		severeLowerLimit.setStroke(new BasicStroke(2.0f));
-		severeLowerLimit.setLabel("Severe Limit");
-		severeLowerLimit.setLabelFont(new Font("SansSerif", Font.PLAIN, 11));
-		severeLowerLimit.setLabelPaint(Color.red);
-		severeLowerLimit.setLabelAnchor(RectangleAnchor.TOP_LEFT);
-		severeLowerLimit.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
-		plot.addRangeMarker(severeLowerLimit);
+		valueMarkers.add(marker);
+		plot.addRangeMarker(marker);
 	}
 
 	private void configRangeAxis() {
@@ -203,20 +166,14 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 	}
 
 	public void showLimitSeries(boolean enabled) {
-		// this.renderer.setSeriesVisible(0, enabled);
-		// this.renderer.setSeriesVisible(1, enabled);
-		// this.renderer.setSeriesVisible(2, enabled);
-		// this.renderer.setSeriesVisible(3, enabled);
 		if (enabled) {
-			plot.addRangeMarker(warningUpperLimit);
-			plot.addRangeMarker(severeUpperLimit);
-			plot.addRangeMarker(warningLowerLimit);
-			plot.addRangeMarker(severeLowerLimit);
+			for (ValueMarker marker : valueMarkers) {
+				plot.addRangeMarker(marker);
+			}
 		} else {
-			plot.removeRangeMarker(severeLowerLimit);
-			plot.removeRangeMarker(severeUpperLimit);
-			plot.removeRangeMarker(warningLowerLimit);
-			plot.removeRangeMarker(warningUpperLimit);
+			for (ValueMarker marker : valueMarkers) {
+				plot.removeRangeMarker(marker);
+			}
 		}
 	}
 

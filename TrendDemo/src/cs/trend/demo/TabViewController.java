@@ -1,6 +1,7 @@
 package cs.trend.demo;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -94,6 +95,17 @@ public class TabViewController {
 		showDifferenceCheckbox.setSelected(false);
 	}
 
+	private void addHotLimitMarkers() {
+		trendPanel.addLimitMarker("Hot Warning Limit", Color.yellow,
+				CsvDataSetDao.NOMINAL_HOT_1_TEMP + 2);
+		trendPanel.addLimitMarker("Hot Severe Limit", Color.red,
+				CsvDataSetDao.NOMINAL_HOT_1_TEMP + 4);
+		trendPanel.addLimitMarker("Hot Warning Limit", Color.yellow,
+				CsvDataSetDao.NOMINAL_HOT_1_TEMP - 2);
+		trendPanel.addLimitMarker("Hot Severe Limit", Color.red,
+				CsvDataSetDao.NOMINAL_HOT_1_TEMP - 4);
+	}
+
 	private void confgureAddPlotButton() {
 		configurationPanel.getAddPlotButton().addActionListener(
 				new ActionListener() {
@@ -101,12 +113,19 @@ public class TabViewController {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						trendPanel
-								.addPlot((CassetteDataPoint) configurationPanel
-										.getDataPointCombo().getSelectedItem());
+						CassetteDataPoint selectedItem = (CassetteDataPoint) configurationPanel
+								.getDataPointCombo().getSelectedItem();
+						trendPanel.addPlot(selectedItem);
+
 						onRealTimeCheckBoxPerformed();
 						trendPanel.showPlotsSeparately();
 						resetShowDifferenceCheckbox();
+
+						if (selectedItem == CassetteDataPoint.COLD_1_TEMP
+								|| selectedItem == CassetteDataPoint.HOT_2_TEMP) {
+							addHotLimitMarkers();
+						}
+
 					}
 
 				});
