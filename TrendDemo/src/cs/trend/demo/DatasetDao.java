@@ -17,4 +17,8 @@ public interface DatasetDao {
 	void addData(Source source, CassetteDataPoint dataPoint);
 
 	void setOutOfLimitListener(OutOfLimitListener outOfLimitListener);
+
+	void addMovingAverage(int periodCount, int skip);
+	
+	void removeMovingAverage();
 }

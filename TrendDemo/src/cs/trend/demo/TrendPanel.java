@@ -24,6 +24,8 @@ import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYDifferenceRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.data.time.MovingAverage;
+import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.Layer;
 import org.jfree.ui.LengthAdjustmentType;
@@ -57,11 +59,14 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 
 	private List<ValueMarker> valueMarkers;
 
+	private TimeSeries movingAverageSeries;
+
 	@SuppressWarnings("deprecation")
 	public void init() {
 		valueMarkers = new ArrayList<ValueMarker>();
 
-		plotDifferenceRenderer = new XYDifferenceRenderer(Color.green, Color.red, false);
+		plotDifferenceRenderer = new XYDifferenceRenderer(Color.green,
+				Color.red, false);
 		plotDifferenceRenderer.setRoundXCoordinates(true);
 
 		dao.setOutOfLimitListener(this);
@@ -75,7 +80,7 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 				true, // create legend?
 				true, // generate tooltips?
 				false // generate URLs?
-		);
+				);
 		chart.setBorderPaint(Color.black);
 		chart.setBorderVisible(true);
 		chart.setBackgroundPaint(Color.white);
@@ -212,7 +217,8 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 
 	@Override
 	public void outOfLimitPerform(Instant begin, Instant end, double value) {
-		Marker cooling = new IntervalMarker(begin.getNano() * 1000, end.getNano() * 1000);
+		Marker cooling = new IntervalMarker(begin.getNano() * 1000,
+				end.getNano() * 1000);
 		cooling.setLabelOffsetType(LengthAdjustmentType.EXPAND);
 		cooling.setPaint(Color.orange);
 		cooling.setLabel("Out Of Limit");
@@ -237,6 +243,16 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 	@Override
 	public int getPlotCount() {
 		return dao.getDataSet().getSeriesCount();
+	}
+
+	@Override
+	public void showAveragePlot(int periodCount, int skip) {
+		dao.addMovingAverage(periodCount, skip);
+	}
+
+	@Override
+	public void hideAveragePlot() {
+		dao.removeMovingAverage();
 	}
 
 }

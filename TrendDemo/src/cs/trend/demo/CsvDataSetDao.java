@@ -2,8 +2,10 @@ package cs.trend.demo;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Random;
 
+import org.jfree.data.time.MovingAverage;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -26,17 +28,23 @@ public class CsvDataSetDao implements DatasetDao {
 
 	private TimeSeriesCollection dataset = new TimeSeriesCollection();
 
-	private TimeSeries hot1Temp = new TimeSeries(CassetteDataPoint.HOT_1_TEMP.toString(), Second.class);
+	private TimeSeries hot1Temp = new TimeSeries(
+			CassetteDataPoint.HOT_1_TEMP.toString(), Second.class);
 
-	private TimeSeries hot2Temp = new TimeSeries(CassetteDataPoint.HOT_2_TEMP.toString(), Second.class);
+	private TimeSeries hot2Temp = new TimeSeries(
+			CassetteDataPoint.HOT_2_TEMP.toString(), Second.class);
 
-	private TimeSeries cold1Temp = new TimeSeries(CassetteDataPoint.COLD_1_TEMP.toString(), Second.class);
+	private TimeSeries cold1Temp = new TimeSeries(
+			CassetteDataPoint.COLD_1_TEMP.toString(), Second.class);
 
-	private TimeSeries cold2Temp = new TimeSeries(CassetteDataPoint.COLD_2_TEMP.toString(), Second.class);
+	private TimeSeries cold2Temp = new TimeSeries(
+			CassetteDataPoint.COLD_2_TEMP.toString(), Second.class);
 
-	private TimeSeries coldSetPoint = new TimeSeries(CassetteDataPoint.COLD_SET_POINT.toString(), Second.class);
+	private TimeSeries coldSetPoint = new TimeSeries(
+			CassetteDataPoint.COLD_SET_POINT.toString(), Second.class);
 
-	private TimeSeries hot1SetPoint = new TimeSeries(CassetteDataPoint.HOT_1_SET_POINT.toString(), Second.class);
+	private TimeSeries hot1SetPoint = new TimeSeries(
+			CassetteDataPoint.HOT_1_SET_POINT.toString(), Second.class);
 
 	private Instant beginning = Instant.now();
 
@@ -50,16 +58,24 @@ public class CsvDataSetDao implements DatasetDao {
 
 	private double[] cold2TempData;
 
+	private TimeSeries movingAverageSeries;
+
 	private static int dataCount = 0;
 
 	public static final int CAS1_HOT2_TEMP_INDEX = 66;
 
 	public static final int CAS1_HOT1_TEMP_INDEX = 56;
 
+	private int avgPeriodCount;
+
+	private int avgSkip;
+
 	public CsvDataSetDao(String fileName) {
 		csvReader = new CSVReader(fileName);
-		hot1TempData = csvReader.getDoubleData(CAS1_HOT1_TEMP_INDEX, MAX_DATA_ITEMS);
-		hot2TempData = csvReader.getDoubleData(CAS1_HOT2_TEMP_INDEX, MAX_DATA_ITEMS);
+		hot1TempData = csvReader.getDoubleData(CAS1_HOT1_TEMP_INDEX,
+				MAX_DATA_ITEMS);
+		hot2TempData = csvReader.getDoubleData(CAS1_HOT2_TEMP_INDEX,
+				MAX_DATA_ITEMS);
 	}
 
 	@Override
@@ -75,7 +91,8 @@ public class CsvDataSetDao implements DatasetDao {
 	}
 
 	@Override
-	public TimeSeriesCollection getDataSet(Source source, CassetteDataPoint dataPoint) {
+	public TimeSeriesCollection getDataSet(Source source,
+			CassetteDataPoint dataPoint) {
 		// addLimitSeries();
 
 		addSeries(source, dataPoint);
@@ -179,7 +196,8 @@ public class CsvDataSetDao implements DatasetDao {
 
 		case HOT_1_TEMP:
 			value = hot1TempData[dataCount];
-			System.out.println("Item count = " + dataCount + " - Value = " + value);
+			System.out.println("Item count = " + dataCount + " - Value = "
+					+ value);
 
 			Random random = new Random();
 
@@ -189,7 +207,8 @@ public class CsvDataSetDao implements DatasetDao {
 				// trigger out of limit value
 				value = NOMINAL_HOT_1_TEMP + 3;
 				if (outOfLimitListener != null) {
-					outOfLimitListener.outOfLimitPerform(now, now.plusMillis(2000), value);
+					outOfLimitListener.outOfLimitPerform(now,
+							now.plusMillis(2000), value);
 				}
 			}
 
@@ -198,7 +217,8 @@ public class CsvDataSetDao implements DatasetDao {
 
 		case HOT_2_TEMP:
 			value = hot2TempData[dataCount];
-			System.out.println("Item count = " + dataCount + " - Value = " + value);
+			System.out.println("Item count = " + dataCount + " - Value = "
+					+ value);
 
 			hot2Temp.add(new Second(), value);
 			break;
@@ -232,6 +252,32 @@ public class CsvDataSetDao implements DatasetDao {
 		}
 
 		return dev;
+	}
+
+	@Override
+	public void addMovingAverage(int periodCount, int skip) {
+		// TODO Auto-generated method stub
+		List series = dataset.getSeries();
+		// Only support moving average for a single plot
+		if (series.size() != 1) {
+			return;
+		}
+		TimeSeries s = (TimeSeries) series.get(0);
+		String name = "Moving Average";
+		avgPeriodCount = periodCount;
+		avgSkip = skip;
+		movingAverageSeries = MovingAverage.createMovingAverage(s, name,
+				periodCount, skip);
+		dataset.addSeries(movingAverageSeries);
+	}
+
+	@Override
+	public void removeMovingAverage() {
+		// TODO Auto-generated method stub
+		if (movingAverageSeries == null) {
+			return;
+		}
+		dataset.removeSeries(movingAverageSeries);
 	}
 
 }
