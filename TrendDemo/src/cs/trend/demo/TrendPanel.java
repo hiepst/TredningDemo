@@ -239,4 +239,16 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 		return dao.getDataSet().getSeriesCount();
 	}
 
+	@Override
+	public void showAveragePlot() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void hideAveragePlot() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

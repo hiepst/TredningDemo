@@ -25,11 +25,11 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import cs.util.ui.UiUtil;
 
 public class ConfigurationPanel extends JPanel {
+
 	private static final long serialVersionUID = 2015090701;
 
 	private JComboBox<Source> sourceCombo;
 
-	
 	public JComboBox<Source> getSourceCombo() {
 		return sourceCombo;
 	}
@@ -60,6 +60,8 @@ public class ConfigurationPanel extends JPanel {
 
 	private JCheckBox showDifferenceCheckbox;
 
+	private JCheckBox showAverageCheckbox;
+
 	public void init() {
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -86,8 +88,7 @@ public class ConfigurationPanel extends JPanel {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		// Collections.sort(dataPointList);
-		dataPointCombo = new JComboBox<CassetteDataPoint>(
-				CassetteDataPoint.values());
+		dataPointCombo = new JComboBox<CassetteDataPoint>(CassetteDataPoint.values());
 		add(dataPointCombo, c);
 
 		c.gridx = 0;
@@ -129,14 +130,12 @@ public class ConfigurationPanel extends JPanel {
 		c.gridx = 0;
 		c.gridy++;
 
-		durartionSpinner = new JSpinner(new SpinnerListModel(
-				DurationValue.values()));
+		durartionSpinner = new JSpinner(new SpinnerListModel(DurationValue.values()));
 		add(durartionSpinner, c);
 
 		c.gridx = 1;
 		realTimeCheckBox = new JCheckBox("Real Time");
-		realTimeCheckBox
-				.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+		realTimeCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		realTimeCheckBox.setSelected(true);
 		realTimeCheckBox.addActionListener(new ActionListener() {
 
@@ -150,18 +149,24 @@ public class ConfigurationPanel extends JPanel {
 		c.gridx = 0;
 		c.gridy++;
 		showLimitCheckbox = new JCheckBox("Show Limits");
-		showLimitCheckbox.setBorder(BorderFactory.createEmptyBorder(10, 5, 10,
-				5));
+		showLimitCheckbox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		showLimitCheckbox.setSelected(true);
 		add(showLimitCheckbox, c);
 
 		c.gridx = 1;
 		showDifferenceCheckbox = new JCheckBox("Show Difference");
-		showDifferenceCheckbox.setBorder(BorderFactory.createEmptyBorder(10, 5,
-				10, 5));
+		showDifferenceCheckbox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		showDifferenceCheckbox.setSelected(false);
 		showDifferenceCheckbox.setEnabled(false);
 		add(showDifferenceCheckbox, c);
+
+		c.gridx = 0;
+		c.gridy++;
+		showAverageCheckbox = new JCheckBox("Show Average");
+		showAverageCheckbox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		showAverageCheckbox.setSelected(false);
+		showAverageCheckbox.setEnabled(false);
+		add(showAverageCheckbox, c);
 
 		c.gridwidth = 1;
 		c.gridx = 0;
@@ -176,6 +181,11 @@ public class ConfigurationPanel extends JPanel {
 		c.gridx = 1;
 		removePlotButton = new JButton("Remove Plot");
 		add(removePlotButton, c);
+	}
+
+	
+	public JCheckBox getShowAverageCheckbox() {
+		return showAverageCheckbox;
 	}
 
 	public JButton getRemovePlotButton() {

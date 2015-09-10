@@ -100,6 +100,13 @@ public class TabViewController {
 		showDifferenceCheckbox.setSelected(false);
 	}
 
+	private void resetShowAverageCheckbox() {
+		// TODO Auto-generated method stub
+		JCheckBox showAverageCheckbox = configurationPanel.getShowAverageCheckbox();
+		showAverageCheckbox.setEnabled(trendPanel.getPlotCount() == 1);
+		showAverageCheckbox.setSelected(false);
+	}
+	
 //	private void addHot1LimitMarkers() {
 //		if (hot1LimitsAdded) {
 //			return;
@@ -225,6 +232,21 @@ public class TabViewController {
 					trendPanel.showPlotDifference();
 				} else {
 					trendPanel.showPlotsSeparately();
+				}
+			}
+		});
+	}
+	
+	private void configureShowAverageCheckbox() {
+		configurationPanel.getShowAverageCheckbox().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (configurationPanel.getShowAverageCheckbox().isSelected()) {
+					trendPanel.showAveragePlot();
+				} else {
+					trendPanel.hideAveragePlot();
 				}
 			}
 		});

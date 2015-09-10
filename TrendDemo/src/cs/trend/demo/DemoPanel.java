@@ -23,4 +23,8 @@ public interface DemoPanel {
 	void showPlotsSeparately();
 
 	int getPlotCount();
+
+	void showAveragePlot();
+
+	void hideAveragePlot();
 }
