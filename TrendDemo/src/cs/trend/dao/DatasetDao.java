@@ -2,9 +2,9 @@ package cs.trend.dao;
 
 import org.jfree.data.time.TimeSeriesCollection;
 
-import cs.trend.demo.CassetteDataPoint;
-import cs.trend.demo.OutOfLimitListener;
-import cs.trend.demo.Source;
+import cs.trend.client.CassetteDataPoint;
+import cs.trend.client.OutOfLimitListener;
+import cs.trend.client.Source;
 
 public interface DatasetDao {
 

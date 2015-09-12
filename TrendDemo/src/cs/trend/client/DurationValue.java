@@ -1,4 +1,4 @@
-package cs.trend.demo;
+package cs.trend.client;
 
 public enum DurationValue {
 	FIVE_MIN("5 Minutes", 5), TEN_MIN("10 Minutes", 10), FIFTEEN_MIN(

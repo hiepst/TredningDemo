@@ -1,4 +1,4 @@
-package cs.trend.demo;
+package cs.trend.client;
 
 /* -------------------
  * MouseOverDemo1.java

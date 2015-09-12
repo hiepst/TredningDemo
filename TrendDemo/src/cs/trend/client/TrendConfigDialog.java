@@ -1,4 +1,4 @@
-package cs.trend.demo;
+package cs.trend.client;
 
 import javax.swing.JOptionPane;
 import javax.swing.JButton;

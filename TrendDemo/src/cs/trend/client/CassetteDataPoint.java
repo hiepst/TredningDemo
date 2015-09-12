@@ -1,4 +1,4 @@
-package cs.trend.demo;
+package cs.trend.client;
 
 public enum CassetteDataPoint {
 	HOT_1_TEMP("Hot 1 Temp"), HOT_2_TEMP("Hot 2 Temp"), COLD_1_TEMP(

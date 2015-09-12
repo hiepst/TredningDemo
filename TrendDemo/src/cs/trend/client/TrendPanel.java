@@ -1,4 +1,4 @@
-package cs.trend.demo;
+package cs.trend.client;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
