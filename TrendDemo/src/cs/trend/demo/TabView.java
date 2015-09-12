@@ -9,6 +9,8 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import cs.trend.dao.CsvDataSetDao;
+import cs.trend.dao.DatasetDao;
 import cs.util.ui.UiUtil;
 
 public class TabView extends JPanel {

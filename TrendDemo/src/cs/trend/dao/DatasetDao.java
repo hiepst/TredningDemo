@@ -1,6 +1,10 @@
-package cs.trend.demo;
+package cs.trend.dao;
 
 import org.jfree.data.time.TimeSeriesCollection;
+
+import cs.trend.demo.CassetteDataPoint;
+import cs.trend.demo.OutOfLimitListener;
+import cs.trend.demo.Source;
 
 public interface DatasetDao {
 

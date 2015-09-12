@@ -1,4 +1,4 @@
-package cs.trend.demo;
+package cs.trend.dao;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -9,6 +9,10 @@ import org.jfree.data.time.MovingAverage;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+
+import cs.trend.demo.CassetteDataPoint;
+import cs.trend.demo.OutOfLimitListener;
+import cs.trend.demo.Source;
 
 public class CsvDataSetDao implements DatasetDao {
 

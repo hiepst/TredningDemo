@@ -32,6 +32,8 @@ import org.jfree.ui.LengthAdjustmentType;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.TextAnchor;
 
+import cs.trend.dao.DatasetDao;
+
 public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener {
 
 	private static final long serialVersionUID = 2015090701;
