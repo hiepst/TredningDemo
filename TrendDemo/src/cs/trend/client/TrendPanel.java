@@ -24,8 +24,6 @@ import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYDifferenceRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.data.time.MovingAverage;
-import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.Layer;
 import org.jfree.ui.LengthAdjustmentType;
@@ -61,9 +59,6 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 
 	private List<ValueMarker> valueMarkers;
 
-	private TimeSeries movingAverageSeries;
-
-	@SuppressWarnings("deprecation")
 	public void init() {
 		valueMarkers = new ArrayList<ValueMarker>();
 
