@@ -216,23 +216,23 @@ public class TabViewController {
 						resetShowAverageCheckbox();
 
 						switch (selectedDataPoint) {
-						case HOT_1_TEMP:
+						case HOT1_TEMPERATURE:
 							addHot1LimitMarkers();
 							break;
-						case HOT_2_TEMP:
+						case HOT2_TEMPERATURE:
 							// addHot2LimitMarkers();
 							addHot1LimitMarkers();
 							break;
-						case COLD_1_TEMP:
+						case COLD1_TEMPERATURE:
 							// addCold1LimitMarkers();
 							break;
-						case COLD_2_TEMP:
+						case COLD2_TEMPERATURE:
 							// addCold2LimitMarkers();
 							break;
 						case COLD_SET_POINT:
 							// Ignore
 							break;
-						case HOT_1_SET_POINT:
+						case HOT1_SET_POINT:
 							// Ignore
 							break;
 						default:

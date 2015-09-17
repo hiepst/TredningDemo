@@ -22,7 +22,6 @@ import org.jfree.data.time.TimeSeriesCollection;
 import cs.trend.client.CassetteDataPoint;
 import cs.trend.client.OutOfLimitListener;
 import cs.trend.client.Source;
-import cs.trend.client.TabView;
 import cs.util.ui.UiUtil;
 
 public class JdbcDataSetDao implements DatasetDao {
@@ -46,8 +45,7 @@ public class JdbcDataSetDao implements DatasetDao {
 	}
 
 	@Override
-	public TimeSeriesCollection getDataSet(Source source,
-			CassetteDataPoint dataPoint) {
+	public TimeSeriesCollection getDataSet(Source source, CassetteDataPoint dataPoint) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -111,8 +109,7 @@ public class JdbcDataSetDao implements DatasetDao {
 		try {
 			con = DriverManager.getConnection(url, user, password);
 			data = new JDBCXYDataset(con);
-			String sql = "SELECT timestamp,"
-					+ "cas1hot1temperature, cas2hot1temperature, cas3hot1temperature "
+			String sql = "SELECT timestamp," + "cas1hot1temperature, cas2hot1temperature, cas3hot1temperature "
 					+ "FROM sciencedata;";
 
 			data.executeQuery(sql);
@@ -153,8 +150,7 @@ public class JdbcDataSetDao implements DatasetDao {
 		System.out.println("Series count = " + dataset.getSeriesCount());
 		System.out.println("Item count = " + dataset.getItemCount());
 
-		JFreeChart seriesChart = ChartFactory.createTimeSeriesChart("Testing",
-				"Timestamp", "Value", dataset);
+		JFreeChart seriesChart = ChartFactory.createTimeSeriesChart("Testing", "Timestamp", "Value", dataset);
 		ChartPanel chartPanel = new ChartPanel(seriesChart);
 		chartPanel.setPreferredSize(new Dimension(500, 500));
 

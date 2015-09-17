@@ -32,8 +32,11 @@ package cs.framework;
  */
 
 import javax.swing.*;
-import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.plaf.basic.BasicButtonUI;
+
+import cs.util.ui.UiUtil;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -42,6 +45,7 @@ import java.awt.event.*;
  * a JButton to close the tab it belongs to
  */
 public class ButtonTabComponent extends JPanel {
+
 	private final JTabbedPane pane;
 
 	public ButtonTabComponent(final JTabbedPane pane) {
@@ -55,6 +59,7 @@ public class ButtonTabComponent extends JPanel {
 
 		// make JLabel read titles from JTabbedPane
 		JLabel label = new JLabel() {
+
 			public String getText() {
 				int i = pane.indexOfTabComponent(ButtonTabComponent.this);
 				if (i != -1) {
@@ -75,8 +80,9 @@ public class ButtonTabComponent extends JPanel {
 	}
 
 	private class TabButton extends JButton implements ActionListener {
+
 		public TabButton() {
-			int size = 17;
+			int size = 15;
 			setPreferredSize(new Dimension(size, size));
 			setToolTipText("Close this tab");
 			// Make the button looks the same for all Laf's
@@ -119,16 +125,15 @@ public class ButtonTabComponent extends JPanel {
 			if (getModel().isRollover()) {
 				g2.setColor(Color.MAGENTA);
 			}
-			int delta = 6;
-			g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight()
-					- delta - 1);
-			g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight()
-					- delta - 1);
+			int delta = 9;
+			g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
+			g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
 			g2.dispose();
 		}
 	}
 
 	private final static MouseListener buttonMouseListener = new MouseAdapter() {
+
 		public void mouseEntered(MouseEvent e) {
 			Component component = e.getComponent();
 			if (component instanceof AbstractButton) {
@@ -145,4 +150,48 @@ public class ButtonTabComponent extends JPanel {
 			}
 		}
 	};
+
+	/**
+	 * Create the GUI and show it. For thread safety, this method should be
+	 * invoked from the event-dispatching thread.
+	 */
+	private static void createAndShowGUI() {
+		try {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (Exception e) {
+			// If Nimbus is not available, you can set the GUI to another look
+			// and feel.
+		}
+
+		// Create and set up the window.
+		JFrame frame = new JFrame("Tab View");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.add("Tab 1", new JPanel());
+		tabbedPane.setTabComponentAt(0, new ButtonTabComponent(tabbedPane));
+
+		frame.getContentPane().setPreferredSize(new Dimension(400, 400));
+		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+
+		// Display the window.
+		UiUtil.centerAndShow(frame);
+
+	}
+
+	public static void main(String[] args) {
+		// Schedule a job for the event-dispatching thread:
+		// creating and showing this application's GUI.
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
+			public void run() {
+				createAndShowGUI();
+			}
+		});
+	}
 }

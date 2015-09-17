@@ -33,22 +33,22 @@ public class CsvDataSetDao implements DatasetDao {
 	private TimeSeriesCollection dataset = new TimeSeriesCollection();
 
 	private TimeSeries hot1Temp = new TimeSeries(
-			CassetteDataPoint.HOT_1_TEMP.toString(), Second.class);
+			CassetteDataPoint.HOT1_TEMPERATURE.toString(), Second.class);
 
 	private TimeSeries hot2Temp = new TimeSeries(
-			CassetteDataPoint.HOT_2_TEMP.toString(), Second.class);
+			CassetteDataPoint.HOT2_TEMPERATURE.toString(), Second.class);
 
 	private TimeSeries cold1Temp = new TimeSeries(
-			CassetteDataPoint.COLD_1_TEMP.toString(), Second.class);
+			CassetteDataPoint.COLD1_TEMPERATURE.toString(), Second.class);
 
 	private TimeSeries cold2Temp = new TimeSeries(
-			CassetteDataPoint.COLD_2_TEMP.toString(), Second.class);
+			CassetteDataPoint.COLD2_TEMPERATURE.toString(), Second.class);
 
 	private TimeSeries coldSetPoint = new TimeSeries(
 			CassetteDataPoint.COLD_SET_POINT.toString(), Second.class);
 
 	private TimeSeries hot1SetPoint = new TimeSeries(
-			CassetteDataPoint.HOT_1_SET_POINT.toString(), Second.class);
+			CassetteDataPoint.HOT1_SET_POINT.toString(), Second.class);
 
 	private Instant beginning = Instant.now();
 
@@ -118,13 +118,13 @@ public class CsvDataSetDao implements DatasetDao {
 	public void addSeries(Source source, CassetteDataPoint dataPoint) {
 
 		switch (dataPoint) {
-		case COLD_1_TEMP:
+		case COLD1_TEMPERATURE:
 			if (dataset.indexOf(cold1Temp) >= 0) {
 				return;
 			}
 			dataset.addSeries(cold1Temp);
 			break;
-		case COLD_2_TEMP:
+		case COLD2_TEMPERATURE:
 			if (dataset.indexOf(cold2Temp) >= 0) {
 				return;
 			}
@@ -136,19 +136,19 @@ public class CsvDataSetDao implements DatasetDao {
 			}
 			dataset.addSeries(coldSetPoint);
 			break;
-		case HOT_1_SET_POINT:
+		case HOT1_SET_POINT:
 			if (dataset.indexOf(hot1SetPoint) >= 0) {
 				return;
 			}
 			dataset.addSeries(hot1SetPoint);
 			break;
-		case HOT_1_TEMP:
+		case HOT1_TEMPERATURE:
 			if (dataset.indexOf(hot1Temp) >= 0) {
 				return;
 			}
 			dataset.addSeries(hot1Temp);
 			break;
-		case HOT_2_TEMP:
+		case HOT2_TEMPERATURE:
 			if (dataset.indexOf(hot2Temp) >= 0) {
 				return;
 			}
@@ -165,12 +165,12 @@ public class CsvDataSetDao implements DatasetDao {
 		// addColdTempLimits();
 		// addHotTempLimits();
 
-		addData(Source.CAS_1, CassetteDataPoint.COLD_1_TEMP);
-		addData(Source.CAS_1, CassetteDataPoint.COLD_2_TEMP);
-		addData(Source.CAS_1, CassetteDataPoint.COLD_SET_POINT);
-		addData(Source.CAS_1, CassetteDataPoint.HOT_1_SET_POINT);
-		addData(Source.CAS_1, CassetteDataPoint.HOT_1_TEMP);
-		addData(Source.CAS_1, CassetteDataPoint.HOT_2_TEMP);
+		addData(Source.CAS1, CassetteDataPoint.COLD1_TEMPERATURE);
+		addData(Source.CAS1, CassetteDataPoint.COLD2_TEMPERATURE);
+		addData(Source.CAS1, CassetteDataPoint.COLD_SET_POINT);
+		addData(Source.CAS1, CassetteDataPoint.HOT1_SET_POINT);
+		addData(Source.CAS1, CassetteDataPoint.HOT1_TEMPERATURE);
+		addData(Source.CAS1, CassetteDataPoint.HOT2_TEMPERATURE);
 	}
 
 	@Override
@@ -178,12 +178,12 @@ public class CsvDataSetDao implements DatasetDao {
 		double value;
 
 		switch (dataPoint) {
-		case COLD_1_TEMP:
+		case COLD1_TEMPERATURE:
 			value = NOMINAL_COLD_1_TEMP + getRandomDeviation();
 			cold1Temp.add(new Second(), value);
 			break;
 
-		case COLD_2_TEMP:
+		case COLD2_TEMPERATURE:
 			value = NOMINAL_COLD_2_TEMP + getRandomDeviation();
 			cold2Temp.add(new Second(), value);
 			break;
@@ -193,12 +193,12 @@ public class CsvDataSetDao implements DatasetDao {
 			coldSetPoint.add(new Second(), value);
 			break;
 
-		case HOT_1_SET_POINT:
+		case HOT1_SET_POINT:
 			value = NOMINAL_HOT_1_SET_POINT;
 			hot1SetPoint.add(new Second(), value);
 			break;
 
-		case HOT_1_TEMP:
+		case HOT1_TEMPERATURE:
 			value = hot1TempData[dataCount];
 			System.out.println("Item count = " + dataCount + " - Value = "
 					+ value);
@@ -219,7 +219,7 @@ public class CsvDataSetDao implements DatasetDao {
 			hot1Temp.add(new Second(), value);
 			break;
 
-		case HOT_2_TEMP:
+		case HOT2_TEMPERATURE:
 			value = hot2TempData[dataCount];
 			System.out.println("Item count = " + dataCount + " - Value = "
 					+ value);
