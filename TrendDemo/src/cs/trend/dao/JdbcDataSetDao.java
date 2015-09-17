@@ -2,9 +2,12 @@ package cs.trend.dao;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -23,6 +26,18 @@ import cs.trend.client.TabView;
 import cs.util.ui.UiUtil;
 
 public class JdbcDataSetDao implements DatasetDao {
+
+	private Properties dbProperties;
+
+	public JdbcDataSetDao() {
+		dbProperties = new Properties();
+		try {
+			dbProperties.load(new FileInputStream("res/db.properties"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 
 	@Override
 	public TimeSeriesCollection getDataSet() {
@@ -79,9 +94,12 @@ public class JdbcDataSetDao implements DatasetDao {
 
 	}
 
-	private static JDBCXYDataset readData() {
+	public JDBCXYDataset readData() {
+
 		JDBCXYDataset data = null;
-		String url = "jdbc:postgresql:cellscience";
+		String url = dbProperties.getProperty("url");
+		String user = dbProperties.getProperty("user");
+		String password = dbProperties.getProperty("password");
 		Connection con;
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -89,13 +107,14 @@ public class JdbcDataSetDao implements DatasetDao {
 			System.err.print("ClassNotFoundException: ");
 			System.err.println(e.getMessage());
 		}
+
 		try {
-			con = DriverManager.getConnection(url, "hiepst", "");
+			con = DriverManager.getConnection(url, user, password);
 			data = new JDBCXYDataset(con);
 			String sql = "SELECT timestamp,"
 					+ "cas1hot1temperature, cas2hot1temperature, cas3hot1temperature "
 					+ "FROM sciencedata;";
-			
+
 			data.executeQuery(sql);
 			con.close();
 		} catch (SQLException e) {
@@ -129,7 +148,8 @@ public class JdbcDataSetDao implements DatasetDao {
 		JFrame frame = new JFrame("JDBC Dataset Dao");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JDBCXYDataset dataset = readData();
+		JdbcDataSetDao dao = new JdbcDataSetDao();
+		JDBCXYDataset dataset = dao.readData();
 		System.out.println("Series count = " + dataset.getSeriesCount());
 		System.out.println("Item count = " + dataset.getItemCount());
 
