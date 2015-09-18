@@ -24,6 +24,7 @@ import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYDifferenceRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.Layer;
 import org.jfree.ui.LengthAdjustmentType;
@@ -198,12 +199,12 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 	}
 
 	@Override
-	public void addPlot(Source source, CassetteDataPoint dataPoint) {
+	public TimeSeries addPlot(Source source, CassetteDataPoint dataPoint) {
 		if (source == null || dataPoint == null) {
-			return;
+			return null;
 		}
 
-		dao.addSeries(source, dataPoint);
+		return dao.addSeries(source, dataPoint);
 	}
 
 	@Override

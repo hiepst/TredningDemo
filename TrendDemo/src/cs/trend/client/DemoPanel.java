@@ -2,6 +2,8 @@ package cs.trend.client;
 
 import javax.swing.JPanel;
 
+import org.jfree.data.time.TimeSeries;
+
 public interface DemoPanel {
 
 	void init();
@@ -12,7 +14,7 @@ public interface DemoPanel {
 
 	JPanel getComponent();
 
-	void addPlot(Source source, CassetteDataPoint dataPoint);
+	TimeSeries addPlot(Source source, CassetteDataPoint dataPoint);
 
 	void removePLot();
 

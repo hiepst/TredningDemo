@@ -9,6 +9,8 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import org.jfree.chart.block.BorderArrangement;
+
 import cs.trend.dao.CsvDataSetDao;
 import cs.trend.dao.DatasetDao;
 import cs.util.ui.UiUtil;
@@ -27,6 +29,14 @@ public class TabView extends JPanel {
 
 	private ConfigurationPanel configurationPanel;
 
+	private SeriesSelectionView seriesSelectionView;
+
+	private DatasetDao dao;
+
+	public SeriesSelectionView getSeriesSelectionView() {
+		return seriesSelectionView;
+	}
+
 	public TrendPanel getTrendPanel() {
 		return trendPanel;
 	}
@@ -34,8 +44,6 @@ public class TabView extends JPanel {
 	public ConfigurationPanel getConfigurationPanel() {
 		return configurationPanel;
 	}
-
-	private DatasetDao dao;
 
 	public void setDao(DatasetDao dao) {
 		this.dao = dao;
@@ -48,8 +56,13 @@ public class TabView extends JPanel {
 
 		configurationPanel = new ConfigurationPanel();
 		configurationPanel.init();
-		JPanel leftPanel = new JPanel(new BorderLayout());
+
+		seriesSelectionView = new SeriesSelectionView();
+		seriesSelectionView.init();
+
+		JPanel leftPanel = new JPanel(new BorderLayout(0, 10));
 		leftPanel.add(configurationPanel, BorderLayout.NORTH);
+		leftPanel.add(seriesSelectionView, BorderLayout.CENTER);
 		leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		bottomRightPanel = new JPanel(new BorderLayout());

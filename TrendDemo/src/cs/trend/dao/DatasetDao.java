@@ -1,5 +1,6 @@
 package cs.trend.dao;
 
+import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
 import cs.trend.client.CassetteDataPoint;
@@ -14,7 +15,7 @@ public interface DatasetDao {
 
 	void removeSeries();
 
-	void addSeries(Source source, CassetteDataPoint dataPoint);
+	TimeSeries addSeries(Source source, CassetteDataPoint dataPoint);
 
 	void addDatas();
 

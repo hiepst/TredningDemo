@@ -13,6 +13,9 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.jfree.data.time.TimeSeries;
+
+import cs.trend.common.DbUtil;
 import cs.trend.dao.CsvDataSetDao;
 import cs.trend.dao.DatasetDao;
 import cs.util.ui.UiUtil;
@@ -39,6 +42,8 @@ public class TabViewController {
 
 	private DatasetDao dao;
 
+	private SeriesSelectionView seriesSelectionView;
+
 	public void setDao(DatasetDao dao) {
 		this.dao = dao;
 	}
@@ -50,6 +55,7 @@ public class TabViewController {
 
 		configurationPanel = tabView.getConfigurationPanel();
 		trendPanel = tabView.getTrendPanel();
+		seriesSelectionView = tabView.getSeriesSelectionView();
 
 		configureShowDifferenceCheckbox();
 		configureShowAverageCheckbox();
@@ -208,12 +214,16 @@ public class TabViewController {
 								.getSourceCombo().getSelectedItem();
 						CassetteDataPoint selectedDataPoint = (CassetteDataPoint) configurationPanel
 								.getDataPointCombo().getSelectedItem();
-						trendPanel.addPlot(selectedSource, selectedDataPoint);
+						TimeSeries series = trendPanel.addPlot(selectedSource,
+								selectedDataPoint);
 
 						onRealTimeCheckBoxPerformed();
 						trendPanel.showPlotsSeparately();
 						resetShowDifferenceCheckbox();
 						resetShowAverageCheckbox();
+
+						seriesSelectionView.addObject(selectedSource.toString()
+								+ "-" + selectedDataPoint.toString());
 
 						switch (selectedDataPoint) {
 						case HOT1_TEMPERATURE:

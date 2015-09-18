@@ -2,6 +2,8 @@ package cs.trend.client;
 
 import javax.swing.JPanel;
 
+import org.jfree.data.time.TimeSeries;
+
 public abstract class AbstractDemoPanel implements DemoPanel {
 
 	@Override
@@ -35,9 +37,9 @@ public abstract class AbstractDemoPanel implements DemoPanel {
 	}
 
 	@Override
-	public void addPlot(Source source, CassetteDataPoint dataPoint) {
+	public TimeSeries addPlot(Source source, CassetteDataPoint dataPoint) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	@Override

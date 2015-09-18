@@ -115,46 +115,54 @@ public class CsvDataSetDao implements DatasetDao {
 	}
 
 	@Override
-	public void addSeries(Source source, CassetteDataPoint dataPoint) {
-
+	public TimeSeries addSeries(Source source, CassetteDataPoint dataPoint) {
+		TimeSeries series = null;
 		switch (dataPoint) {
 		case COLD1_TEMPERATURE:
 			if (dataset.indexOf(cold1Temp) >= 0) {
-				return;
+				return null;
 			}
 			dataset.addSeries(cold1Temp);
+			series = cold1Temp;
 			break;
 		case COLD2_TEMPERATURE:
 			if (dataset.indexOf(cold2Temp) >= 0) {
-				return;
+				return null;
 			}
 			dataset.addSeries(cold2Temp);
+			series = cold2Temp;
 			break;
 		case COLD_SET_POINT:
 			if (dataset.indexOf(coldSetPoint) >= 0) {
-				return;
+				return null;
 			}
 			dataset.addSeries(coldSetPoint);
+			series = coldSetPoint;
 			break;
 		case HOT1_SET_POINT:
 			if (dataset.indexOf(hot1SetPoint) >= 0) {
-				return;
+				return null;
 			}
 			dataset.addSeries(hot1SetPoint);
+			series = hot1SetPoint;
 			break;
 		case HOT1_TEMPERATURE:
 			if (dataset.indexOf(hot1Temp) >= 0) {
-				return;
+				return null;
 			}
 			dataset.addSeries(hot1Temp);
+			series = hot1Temp;
 			break;
 		case HOT2_TEMPERATURE:
 			if (dataset.indexOf(hot2Temp) >= 0) {
-				return;
+				return null;
 			}
 			dataset.addSeries(hot2Temp);
+			series = hot2Temp;
 			break;
 		}
+		
+		return series;
 	}
 
 	@Override

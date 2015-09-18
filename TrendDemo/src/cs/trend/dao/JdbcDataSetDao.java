@@ -17,6 +17,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.jdbc.JDBCXYDataset;
+import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
 import cs.trend.client.CassetteDataPoint;
@@ -57,8 +58,9 @@ public class JdbcDataSetDao implements DatasetDao {
 	}
 
 	@Override
-	public void addSeries(Source source, CassetteDataPoint dataPoint) {
+	public TimeSeries addSeries(Source source, CassetteDataPoint dataPoint) {
 		// TODO Auto-generated method stub
+		return null;
 
 	}
 
