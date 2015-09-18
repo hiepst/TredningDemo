@@ -16,7 +16,7 @@ public interface DemoPanel {
 
 	TimeSeries addPlot(Source source, CassetteDataPoint dataPoint);
 
-	void removePLot();
+	void removePlot();
 
 	public void setDomainRange(int minutes);
 
