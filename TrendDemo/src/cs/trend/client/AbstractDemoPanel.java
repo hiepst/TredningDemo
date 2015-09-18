@@ -43,7 +43,7 @@ public abstract class AbstractDemoPanel implements DemoPanel {
 	}
 
 	@Override
-	public void removePLot() {
+	public void removePlot() {
 		// TODO Auto-generated method stub
 
 	}

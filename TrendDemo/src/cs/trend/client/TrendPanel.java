@@ -208,7 +208,7 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 	}
 
 	@Override
-	public void removePLot() {
+	public void removePlot() {
 		dao.removeSeries();
 	}
 

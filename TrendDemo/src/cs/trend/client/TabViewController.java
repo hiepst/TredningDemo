@@ -5,16 +5,23 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import org.jfree.data.time.TimeSeries;
 
+import cs.trend.common.DataSourceUtil;
 import cs.trend.common.DbUtil;
 import cs.trend.dao.CsvDataSetDao;
 import cs.trend.dao.DatasetDao;
@@ -93,19 +100,41 @@ public class TabViewController {
 	}
 
 	private void configureRemovePlotButton() {
-		configurationPanel.getRemovePlotButton().addActionListener(
-				new ActionListener() {
+		JTree tree = seriesSelectionView.getTree();
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						trendPanel.removePLot();
-						trendPanel.showPlotsSeparately();
-						// trendPanel.removeLimitMarkers(4);
-						resetShowDifferenceCheckbox();
-						resetShowAverageCheckbox();
-					}
-				});
+		JButton removePlotButton = configurationPanel.getRemovePlotButton();
+		removePlotButton.setEnabled(false);
+		removePlotButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				trendPanel.removePlot();
+				trendPanel.showPlotsSeparately();
+				// trendPanel.removeLimitMarkers(4);
+				resetShowDifferenceCheckbox();
+				resetShowAverageCheckbox();
+
+				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
+						.getSelectionModel().getSelectionPath()
+						.getLastPathComponent();
+				String displayName = (String) selectedNode.getUserObject();
+			}
+		});
+
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				// TODO Auto-generated method stub
+				TreePath newLeadSelectionPath = e.getNewLeadSelectionPath();
+				boolean enabled = newLeadSelectionPath != null
+						&& newLeadSelectionPath.getLastPathComponent() != seriesSelectionView
+								.getRootNode();
+
+				removePlotButton.setEnabled(enabled);
+			}
+		});
 	}
 
 	private void resetShowDifferenceCheckbox() {
@@ -204,54 +233,55 @@ public class TabViewController {
 	}
 
 	private void confgureAddPlotButton() {
-		configurationPanel.getAddPlotButton().addActionListener(
-				new ActionListener() {
+		JButton addPlotButton = configurationPanel.getAddPlotButton();
+		addPlotButton.addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						Source selectedSource = (Source) configurationPanel
-								.getSourceCombo().getSelectedItem();
-						CassetteDataPoint selectedDataPoint = (CassetteDataPoint) configurationPanel
-								.getDataPointCombo().getSelectedItem();
-						TimeSeries series = trendPanel.addPlot(selectedSource,
-								selectedDataPoint);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Source selectedSource = (Source) configurationPanel
+						.getSourceCombo().getSelectedItem();
+				CassetteDataPoint selectedDataPoint = (CassetteDataPoint) configurationPanel
+						.getDataPointCombo().getSelectedItem();
+				TimeSeries series = trendPanel.addPlot(selectedSource,
+						selectedDataPoint);
 
-						onRealTimeCheckBoxPerformed();
-						trendPanel.showPlotsSeparately();
-						resetShowDifferenceCheckbox();
-						resetShowAverageCheckbox();
+				onRealTimeCheckBoxPerformed();
+				trendPanel.showPlotsSeparately();
+				resetShowDifferenceCheckbox();
+				resetShowAverageCheckbox();
 
-						seriesSelectionView.addObject(selectedSource.toString()
-								+ "-" + selectedDataPoint.toString());
+				seriesSelectionView.addObject(DataSourceUtil.getDisplayName(
+						selectedSource, selectedDataPoint));
 
-						switch (selectedDataPoint) {
-						case HOT1_TEMPERATURE:
-							addHot1LimitMarkers();
-							break;
-						case HOT2_TEMPERATURE:
-							// addHot2LimitMarkers();
-							addHot1LimitMarkers();
-							break;
-						case COLD1_TEMPERATURE:
-							// addCold1LimitMarkers();
-							break;
-						case COLD2_TEMPERATURE:
-							// addCold2LimitMarkers();
-							break;
-						case COLD_SET_POINT:
-							// Ignore
-							break;
-						case HOT1_SET_POINT:
-							// Ignore
-							break;
-						default:
-							// Ignore
-							break;
-						}
-					}
+				switch (selectedDataPoint) {
+				case HOT1_TEMPERATURE:
+					addHot1LimitMarkers();
+					break;
+				case HOT2_TEMPERATURE:
+					// addHot2LimitMarkers();
+					addHot1LimitMarkers();
+					break;
+				case COLD1_TEMPERATURE:
+					// addCold1LimitMarkers();
+					break;
+				case COLD2_TEMPERATURE:
+					// addCold2LimitMarkers();
+					break;
+				case COLD_SET_POINT:
+					// Ignore
+					break;
+				case HOT1_SET_POINT:
+					// Ignore
+					break;
+				default:
+					// Ignore
+					break;
+				}
+			}
 
-				});
+		});
+
 	}
 
 	private void configureDurartionSpinner() {
