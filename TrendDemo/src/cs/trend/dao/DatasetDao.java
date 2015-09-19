@@ -3,23 +3,21 @@ package cs.trend.dao;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
-import cs.trend.client.CassetteDataPoint;
 import cs.trend.client.OutOfLimitListener;
-import cs.trend.client.Source;
 
 public interface DatasetDao {
 
 	TimeSeriesCollection getDataSet();
 
-	TimeSeriesCollection getDataSet(Source source, CassetteDataPoint dataPoint);
+	TimeSeriesCollection getDataSet(String displayName);
 
-	void removeSeries();
+	void removeSeries(String displayName);
 
-	TimeSeries addSeries(Source source, CassetteDataPoint dataPoint);
+	TimeSeries addSeries(String displayName);
 
 	void addDatas();
 
-	void addData(Source source, CassetteDataPoint dataPoint);
+	void addData(String displayName);
 
 	void setOutOfLimitListener(OutOfLimitListener outOfLimitListener);
 

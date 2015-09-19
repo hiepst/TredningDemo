@@ -108,17 +108,17 @@ public class TabViewController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				trendPanel.removePlot();
-				trendPanel.showPlotsSeparately();
-				// trendPanel.removeLimitMarkers(4);
-				resetShowDifferenceCheckbox();
-				resetShowAverageCheckbox();
-
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
 						.getSelectionModel().getSelectionPath()
 						.getLastPathComponent();
 				String displayName = (String) selectedNode.getUserObject();
+				trendPanel.removePlot(displayName);
+				trendPanel.showPlotsSeparately();
+				// trendPanel.removeLimitMarkers(4);
+				resetShowDifferenceCheckbox();
+				resetShowAverageCheckbox();
+				seriesSelectionView.removeCurrentNode();
+				onRealTimeCheckBoxPerformed();
 			}
 		});
 
@@ -243,8 +243,8 @@ public class TabViewController {
 						.getSourceCombo().getSelectedItem();
 				CassetteDataPoint selectedDataPoint = (CassetteDataPoint) configurationPanel
 						.getDataPointCombo().getSelectedItem();
-				TimeSeries series = trendPanel.addPlot(selectedSource,
-						selectedDataPoint);
+				TimeSeries series = trendPanel.addPlot(DataSourceUtil
+						.getDisplayName(selectedSource, selectedDataPoint));
 
 				onRealTimeCheckBoxPerformed();
 				trendPanel.showPlotsSeparately();

@@ -37,13 +37,13 @@ public abstract class AbstractDemoPanel implements DemoPanel {
 	}
 
 	@Override
-	public TimeSeries addPlot(Source source, CassetteDataPoint dataPoint) {
+	public TimeSeries addPlot(String displayName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void removePlot() {
+	public void removePlot(String displayName) {
 		// TODO Auto-generated method stub
 
 	}

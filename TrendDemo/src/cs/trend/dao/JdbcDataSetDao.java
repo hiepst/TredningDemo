@@ -20,9 +20,7 @@ import org.jfree.data.jdbc.JDBCXYDataset;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
-import cs.trend.client.CassetteDataPoint;
 import cs.trend.client.OutOfLimitListener;
-import cs.trend.client.Source;
 import cs.util.ui.UiUtil;
 
 public class JdbcDataSetDao implements DatasetDao {
@@ -46,19 +44,19 @@ public class JdbcDataSetDao implements DatasetDao {
 	}
 
 	@Override
-	public TimeSeriesCollection getDataSet(Source source, CassetteDataPoint dataPoint) {
+	public TimeSeriesCollection getDataSet(String displayName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void removeSeries() {
+	public void removeSeries(String displayName) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public TimeSeries addSeries(Source source, CassetteDataPoint dataPoint) {
+	public TimeSeries addSeries(String displayName) {
 		// TODO Auto-generated method stub
 		return null;
 
@@ -71,7 +69,7 @@ public class JdbcDataSetDao implements DatasetDao {
 	}
 
 	@Override
-	public void addData(Source source, CassetteDataPoint dataPoint) {
+	public void addData(String displayName) {
 		// TODO Auto-generated method stub
 
 	}
