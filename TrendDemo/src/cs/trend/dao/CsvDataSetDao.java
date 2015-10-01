@@ -12,7 +12,7 @@ import org.jfree.data.time.TimeSeriesCollection;
 
 import cs.trend.client.CassetteDataPoint;
 import cs.trend.client.OutOfLimitListener;
-import cs.trend.client.Source;
+import cs.trend.common.DataSourceUtil;
 
 public class CsvDataSetDao implements DatasetDao {
 
@@ -31,24 +31,6 @@ public class CsvDataSetDao implements DatasetDao {
 	public static final double NOMINAL_HOT_1_TEMP = 23;
 
 	private TimeSeriesCollection dataset = new TimeSeriesCollection();
-
-	private TimeSeries hot1Temp = new TimeSeries(
-			CassetteDataPoint.HOT1_TEMPERATURE.toString(), Second.class);
-
-	private TimeSeries hot2Temp = new TimeSeries(
-			CassetteDataPoint.HOT2_TEMPERATURE.toString(), Second.class);
-
-	private TimeSeries cold1Temp = new TimeSeries(
-			CassetteDataPoint.COLD1_TEMPERATURE.toString(), Second.class);
-
-	private TimeSeries cold2Temp = new TimeSeries(
-			CassetteDataPoint.COLD2_TEMPERATURE.toString(), Second.class);
-
-	private TimeSeries coldSetPoint = new TimeSeries(
-			CassetteDataPoint.COLD_SET_POINT.toString(), Second.class);
-
-	private TimeSeries hot1SetPoint = new TimeSeries(
-			CassetteDataPoint.HOT1_SET_POINT.toString(), Second.class);
 
 	private Instant beginning = Instant.now();
 
@@ -95,73 +77,29 @@ public class CsvDataSetDao implements DatasetDao {
 	}
 
 	@Override
-	public TimeSeriesCollection getDataSet(Source source,
-			CassetteDataPoint dataPoint) {
+	public TimeSeriesCollection getDataSet(String displayName) {
 		// addLimitSeries();
 
-		addSeries(source, dataPoint);
+		addSeries(null);
 
 		return dataset;
 	}
 
 	@Override
-	public void removeSeries() {
+	public void removeSeries(String displayName) {
 		int seriesCount = dataset.getSeriesCount();
 		if (seriesCount == 0) {
 			return;
 		}
-		dataset.removeSeries(seriesCount - 1);
-
+		// dataset.removeSeries(seriesCount - 1);
+		TimeSeries series = dataset.getSeries(displayName);
+		dataset.removeSeries(series);
 	}
 
 	@Override
-	public TimeSeries addSeries(Source source, CassetteDataPoint dataPoint) {
-		TimeSeries series = null;
-		switch (dataPoint) {
-		case COLD1_TEMPERATURE:
-			if (dataset.indexOf(cold1Temp) >= 0) {
-				return null;
-			}
-			dataset.addSeries(cold1Temp);
-			series = cold1Temp;
-			break;
-		case COLD2_TEMPERATURE:
-			if (dataset.indexOf(cold2Temp) >= 0) {
-				return null;
-			}
-			dataset.addSeries(cold2Temp);
-			series = cold2Temp;
-			break;
-		case COLD_SET_POINT:
-			if (dataset.indexOf(coldSetPoint) >= 0) {
-				return null;
-			}
-			dataset.addSeries(coldSetPoint);
-			series = coldSetPoint;
-			break;
-		case HOT1_SET_POINT:
-			if (dataset.indexOf(hot1SetPoint) >= 0) {
-				return null;
-			}
-			dataset.addSeries(hot1SetPoint);
-			series = hot1SetPoint;
-			break;
-		case HOT1_TEMPERATURE:
-			if (dataset.indexOf(hot1Temp) >= 0) {
-				return null;
-			}
-			dataset.addSeries(hot1Temp);
-			series = hot1Temp;
-			break;
-		case HOT2_TEMPERATURE:
-			if (dataset.indexOf(hot2Temp) >= 0) {
-				return null;
-			}
-			dataset.addSeries(hot2Temp);
-			series = hot2Temp;
-			break;
-		}
-		
+	public TimeSeries addSeries(String displayName) {
+		TimeSeries series = new TimeSeries(displayName);
+		dataset.addSeries(series);
 		return series;
 	}
 
@@ -169,41 +107,44 @@ public class CsvDataSetDao implements DatasetDao {
 	public void addDatas() {
 		Second now = new Second();
 		System.out.println("Now = " + now.toString());
+		for (Object obj : dataset.getSeries()) {
+			TimeSeries s = (TimeSeries) obj;
+			String displayName = s.getKey().toString();
+			addData(displayName);
+		}
 
-		// addColdTempLimits();
-		// addHotTempLimits();
-
-		addData(Source.CAS1, CassetteDataPoint.COLD1_TEMPERATURE);
-		addData(Source.CAS1, CassetteDataPoint.COLD2_TEMPERATURE);
-		addData(Source.CAS1, CassetteDataPoint.COLD_SET_POINT);
-		addData(Source.CAS1, CassetteDataPoint.HOT1_SET_POINT);
-		addData(Source.CAS1, CassetteDataPoint.HOT1_TEMPERATURE);
-		addData(Source.CAS1, CassetteDataPoint.HOT2_TEMPERATURE);
 	}
 
 	@Override
-	public void addData(Source source, CassetteDataPoint dataPoint) {
+	public void addData(String displayName) {
+		CassetteDataPoint dataPoint = DataSourceUtil
+				.getCassetteDataPoint(displayName);
+
 		double value;
+		TimeSeries timeSeries = dataset.getSeries(displayName);
+		if (timeSeries == null) {
+			return;
+		}
 
 		switch (dataPoint) {
 		case COLD1_TEMPERATURE:
 			value = NOMINAL_COLD_1_TEMP + getRandomDeviation();
-			cold1Temp.add(new Second(), value);
+			timeSeries.add(new Second(), value);
 			break;
 
 		case COLD2_TEMPERATURE:
 			value = NOMINAL_COLD_2_TEMP + getRandomDeviation();
-			cold2Temp.add(new Second(), value);
+			timeSeries.add(new Second(), value);
 			break;
 
 		case COLD_SET_POINT:
 			value = 5;
-			coldSetPoint.add(new Second(), value);
+			timeSeries.add(new Second(), value);
 			break;
 
 		case HOT1_SET_POINT:
 			value = NOMINAL_HOT_1_SET_POINT;
-			hot1SetPoint.add(new Second(), value);
+			timeSeries.add(new Second(), value);
 			break;
 
 		case HOT1_TEMPERATURE:
@@ -224,7 +165,7 @@ public class CsvDataSetDao implements DatasetDao {
 				}
 			}
 
-			hot1Temp.add(new Second(), value);
+			timeSeries.add(new Second(), value);
 			break;
 
 		case HOT2_TEMPERATURE:
@@ -232,7 +173,7 @@ public class CsvDataSetDao implements DatasetDao {
 			System.out.println("Item count = " + dataCount + " - Value = "
 					+ value);
 
-			hot2Temp.add(new Second(), value);
+			timeSeries.add(new Second(), value);
 			break;
 		}
 

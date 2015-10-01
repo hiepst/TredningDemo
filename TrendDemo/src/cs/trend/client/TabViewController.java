@@ -74,29 +74,25 @@ public class TabViewController {
 	}
 
 	private void configureRealTimeCheckBox() {
-		configurationPanel.getRealTimeCheckBox().addActionListener(
-				new ActionListener() {
+		configurationPanel.getRealTimeCheckBox().addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						onRealTimeCheckBoxPerformed();
-					}
-				});
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				onRealTimeCheckBoxPerformed();
+			}
+		});
 	}
 
 	private void configureShowLimitCheckbox() {
-		configurationPanel.getShowLimitCheckbox().addActionListener(
-				new ActionListener() {
+		configurationPanel.getShowLimitCheckbox().addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						((TrendPanel) trendPanel)
-								.showLimitSeries(configurationPanel
-										.getShowLimitCheckbox().isSelected());
-					}
-				});
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				((TrendPanel) trendPanel).showLimitSeries(configurationPanel.getShowLimitCheckbox().isSelected());
+			}
+		});
 	}
 
 	private void configureRemovePlotButton() {
@@ -108,17 +104,16 @@ public class TabViewController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				trendPanel.removePlot();
+				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getSelectionModel()
+						.getSelectionPath().getLastPathComponent();
+				String displayName = (String) selectedNode.getUserObject();
+				trendPanel.removePlot(displayName);
 				trendPanel.showPlotsSeparately();
 				// trendPanel.removeLimitMarkers(4);
 				resetShowDifferenceCheckbox();
 				resetShowAverageCheckbox();
-
-				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
-						.getSelectionModel().getSelectionPath()
-						.getLastPathComponent();
-				String displayName = (String) selectedNode.getUserObject();
+				seriesSelectionView.removeCurrentNode();
+				onRealTimeCheckBoxPerformed();
 			}
 		});
 
@@ -129,8 +124,7 @@ public class TabViewController {
 				// TODO Auto-generated method stub
 				TreePath newLeadSelectionPath = e.getNewLeadSelectionPath();
 				boolean enabled = newLeadSelectionPath != null
-						&& newLeadSelectionPath.getLastPathComponent() != seriesSelectionView
-								.getRootNode();
+						&& newLeadSelectionPath.getLastPathComponent() != seriesSelectionView.getRootNode();
 
 				removePlotButton.setEnabled(enabled);
 			}
@@ -139,16 +133,14 @@ public class TabViewController {
 
 	private void resetShowDifferenceCheckbox() {
 		// TODO Auto-generated method stub
-		JCheckBox showDifferenceCheckbox = configurationPanel
-				.getShowDifferenceCheckbox();
+		JCheckBox showDifferenceCheckbox = configurationPanel.getShowDifferenceCheckbox();
 		showDifferenceCheckbox.setEnabled(trendPanel.getPlotCount() == 2);
 		showDifferenceCheckbox.setSelected(false);
 	}
 
 	private void resetShowAverageCheckbox() {
 		// TODO Auto-generated method stub
-		JCheckBox showAverageCheckbox = configurationPanel
-				.getShowAverageCheckbox();
+		JCheckBox showAverageCheckbox = configurationPanel.getShowAverageCheckbox();
 		showAverageCheckbox.setEnabled(trendPanel.getPlotCount() == 1);
 		showAverageCheckbox.setSelected(false);
 	}
@@ -172,14 +164,10 @@ public class TabViewController {
 		if (hot1LimitsAdded) {
 			return;
 		}
-		trendPanel.addLimitMarker("Warning Limit", Color.yellow,
-				CsvDataSetDao.NOMINAL_HOT_1_TEMP + 2);
-		trendPanel.addLimitMarker("Severe Limit", Color.red,
-				CsvDataSetDao.NOMINAL_HOT_1_TEMP + 4);
-		trendPanel.addLimitMarker("Warning Limit", Color.yellow,
-				CsvDataSetDao.NOMINAL_HOT_1_TEMP - 2);
-		trendPanel.addLimitMarker("Severe Limit", Color.red,
-				CsvDataSetDao.NOMINAL_HOT_1_TEMP - 4);
+		trendPanel.addLimitMarker("Warning Limit", Color.yellow, CsvDataSetDao.NOMINAL_HOT_1_TEMP + 2);
+		trendPanel.addLimitMarker("Severe Limit", Color.red, CsvDataSetDao.NOMINAL_HOT_1_TEMP + 4);
+		trendPanel.addLimitMarker("Warning Limit", Color.yellow, CsvDataSetDao.NOMINAL_HOT_1_TEMP - 2);
+		trendPanel.addLimitMarker("Severe Limit", Color.red, CsvDataSetDao.NOMINAL_HOT_1_TEMP - 4);
 
 		hot1LimitsAdded = true;
 	}
@@ -188,14 +176,10 @@ public class TabViewController {
 		if (hot2LimitsAdded) {
 			return;
 		}
-		trendPanel.addLimitMarker("Hot 2 Warning Limit", Color.yellow,
-				CsvDataSetDao.NOMINAL_HOT_2_TEMP + 2);
-		trendPanel.addLimitMarker("Hot 2 Severe Limit", Color.red,
-				CsvDataSetDao.NOMINAL_HOT_2_TEMP + 4);
-		trendPanel.addLimitMarker("Hot 2 Warning Limit", Color.yellow,
-				CsvDataSetDao.NOMINAL_HOT_2_TEMP - 2);
-		trendPanel.addLimitMarker("Hot 2 Severe Limit", Color.red,
-				CsvDataSetDao.NOMINAL_HOT_2_TEMP - 4);
+		trendPanel.addLimitMarker("Hot 2 Warning Limit", Color.yellow, CsvDataSetDao.NOMINAL_HOT_2_TEMP + 2);
+		trendPanel.addLimitMarker("Hot 2 Severe Limit", Color.red, CsvDataSetDao.NOMINAL_HOT_2_TEMP + 4);
+		trendPanel.addLimitMarker("Hot 2 Warning Limit", Color.yellow, CsvDataSetDao.NOMINAL_HOT_2_TEMP - 2);
+		trendPanel.addLimitMarker("Hot 2 Severe Limit", Color.red, CsvDataSetDao.NOMINAL_HOT_2_TEMP - 4);
 
 		hot2LimitsAdded = true;
 	}
@@ -204,14 +188,10 @@ public class TabViewController {
 		if (cold1LimitsAdded) {
 			return;
 		}
-		trendPanel.addLimitMarker("Cold 1 Warning Limit", Color.yellow,
-				CsvDataSetDao.NOMINAL_COLD_1_TEMP + 2);
-		trendPanel.addLimitMarker("Cold 1 Severe Limit", Color.red,
-				CsvDataSetDao.NOMINAL_COLD_1_TEMP + 4);
-		trendPanel.addLimitMarker("Cold 1 Warning Limit", Color.yellow,
-				CsvDataSetDao.NOMINAL_COLD_1_TEMP - 2);
-		trendPanel.addLimitMarker("Cold 1 Severe Limit", Color.red,
-				CsvDataSetDao.NOMINAL_COLD_1_TEMP - 4);
+		trendPanel.addLimitMarker("Cold 1 Warning Limit", Color.yellow, CsvDataSetDao.NOMINAL_COLD_1_TEMP + 2);
+		trendPanel.addLimitMarker("Cold 1 Severe Limit", Color.red, CsvDataSetDao.NOMINAL_COLD_1_TEMP + 4);
+		trendPanel.addLimitMarker("Cold 1 Warning Limit", Color.yellow, CsvDataSetDao.NOMINAL_COLD_1_TEMP - 2);
+		trendPanel.addLimitMarker("Cold 1 Severe Limit", Color.red, CsvDataSetDao.NOMINAL_COLD_1_TEMP - 4);
 
 		cold1LimitsAdded = true;
 	}
@@ -220,14 +200,10 @@ public class TabViewController {
 		if (cold2LimitsAdded) {
 			return;
 		}
-		trendPanel.addLimitMarker("Cold 2 Warning Limit", Color.yellow,
-				CsvDataSetDao.NOMINAL_COLD_2_TEMP + 2);
-		trendPanel.addLimitMarker("Cold 2 Severe Limit", Color.red,
-				CsvDataSetDao.NOMINAL_COLD_2_TEMP + 4);
-		trendPanel.addLimitMarker("Cold 2 Warning Limit", Color.yellow,
-				CsvDataSetDao.NOMINAL_COLD_2_TEMP - 2);
-		trendPanel.addLimitMarker("Cold 2 Severe Limit", Color.red,
-				CsvDataSetDao.NOMINAL_COLD_2_TEMP - 4);
+		trendPanel.addLimitMarker("Cold 2 Warning Limit", Color.yellow, CsvDataSetDao.NOMINAL_COLD_2_TEMP + 2);
+		trendPanel.addLimitMarker("Cold 2 Severe Limit", Color.red, CsvDataSetDao.NOMINAL_COLD_2_TEMP + 4);
+		trendPanel.addLimitMarker("Cold 2 Warning Limit", Color.yellow, CsvDataSetDao.NOMINAL_COLD_2_TEMP - 2);
+		trendPanel.addLimitMarker("Cold 2 Severe Limit", Color.red, CsvDataSetDao.NOMINAL_COLD_2_TEMP - 4);
 
 		cold2LimitsAdded = true;
 	}
@@ -239,20 +215,18 @@ public class TabViewController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Source selectedSource = (Source) configurationPanel
-						.getSourceCombo().getSelectedItem();
-				CassetteDataPoint selectedDataPoint = (CassetteDataPoint) configurationPanel
-						.getDataPointCombo().getSelectedItem();
-				TimeSeries series = trendPanel.addPlot(selectedSource,
-						selectedDataPoint);
+				Source selectedSource = (Source) configurationPanel.getSourceCombo().getSelectedItem();
+				CassetteDataPoint selectedDataPoint = (CassetteDataPoint) configurationPanel.getDataPointCombo()
+						.getSelectedItem();
+				TimeSeries series = trendPanel
+						.addPlot(DataSourceUtil.getDisplayName(selectedSource, selectedDataPoint));
 
 				onRealTimeCheckBoxPerformed();
 				trendPanel.showPlotsSeparately();
 				resetShowDifferenceCheckbox();
 				resetShowAverageCheckbox();
 
-				seriesSelectionView.addObject(DataSourceUtil.getDisplayName(
-						selectedSource, selectedDataPoint));
+				seriesSelectionView.addObject(DataSourceUtil.getDisplayName(selectedSource, selectedDataPoint));
 
 				switch (selectedDataPoint) {
 				case HOT1_TEMPERATURE:
@@ -285,59 +259,50 @@ public class TabViewController {
 	}
 
 	private void configureDurartionSpinner() {
-		configurationPanel.getDurartionSpinner().addChangeListener(
-				new ChangeListener() {
+		configurationPanel.getDurartionSpinner().addChangeListener(new ChangeListener() {
 
-					@Override
-					public void stateChanged(ChangeEvent e) {
-						// TODO Auto-generated method stub
-						DurationValue value = (DurationValue) configurationPanel
-								.getDurartionSpinner().getValue();
-						trendPanel.setDomainRange(value.getValue());
-					}
-				});
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				DurationValue value = (DurationValue) configurationPanel.getDurartionSpinner().getValue();
+				trendPanel.setDomainRange(value.getValue());
+			}
+		});
 	}
 
 	private void configureShowDifferenceCheckbox() {
-		configurationPanel.getShowDifferenceCheckbox().addActionListener(
-				new ActionListener() {
+		configurationPanel.getShowDifferenceCheckbox().addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						if (configurationPanel.getShowDifferenceCheckbox()
-								.isSelected()) {
-							trendPanel.showPlotDifference();
-						} else {
-							trendPanel.showPlotsSeparately();
-						}
-					}
-				});
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (configurationPanel.getShowDifferenceCheckbox().isSelected()) {
+					trendPanel.showPlotDifference();
+				} else {
+					trendPanel.showPlotsSeparately();
+				}
+			}
+		});
 	}
 
 	private void configureShowAverageCheckbox() {
-		configurationPanel.getShowAverageCheckbox().addActionListener(
-				new ActionListener() {
+		configurationPanel.getShowAverageCheckbox().addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						if (configurationPanel.getShowAverageCheckbox()
-								.isSelected()) {
-							int duration = ((DurationValue) configurationPanel
-									.getDurartionSpinner().getValue())
-									.getValue();
-							trendPanel.showAveragePlot(duration, 0);
-						} else {
-							trendPanel.hideAveragePlot();
-						}
-					}
-				});
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (configurationPanel.getShowAverageCheckbox().isSelected()) {
+					int duration = ((DurationValue) configurationPanel.getDurartionSpinner().getValue()).getValue();
+					trendPanel.showAveragePlot(duration, 0);
+				} else {
+					trendPanel.hideAveragePlot();
+				}
+			}
+		});
 	}
 
 	private void onRealTimeCheckBoxPerformed() {
-		boolean realtimeSelected = configurationPanel.getRealTimeCheckBox()
-				.isSelected();
+		boolean realtimeSelected = configurationPanel.getRealTimeCheckBox().isSelected();
 
 		configurationPanel.setDateTimeFieldEnabled(!realtimeSelected);
 

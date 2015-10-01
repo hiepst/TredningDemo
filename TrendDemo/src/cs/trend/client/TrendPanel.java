@@ -63,7 +63,8 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 	public void init() {
 		valueMarkers = new ArrayList<ValueMarker>();
 
-		plotDifferenceRenderer = new XYDifferenceRenderer(Color.green, Color.red, false);
+		plotDifferenceRenderer = new XYDifferenceRenderer(Color.green,
+				Color.red, false);
 		plotDifferenceRenderer.setRoundXCoordinates(true);
 
 		dao.setOutOfLimitListener(this);
@@ -77,7 +78,7 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 				true, // create legend?
 				true, // generate tooltips?
 				false // generate URLs?
-		);
+				);
 		chart.setBorderPaint(Color.black);
 		chart.setBorderVisible(true);
 		chart.setBackgroundPaint(Color.white);
@@ -199,22 +200,19 @@ public class TrendPanel extends JPanel implements DemoPanel, OutOfLimitListener 
 	}
 
 	@Override
-	public TimeSeries addPlot(Source source, CassetteDataPoint dataPoint) {
-		if (source == null || dataPoint == null) {
-			return null;
-		}
-
-		return dao.addSeries(source, dataPoint);
+	public TimeSeries addPlot(String displayName) {
+		return dao.addSeries(displayName);
 	}
 
 	@Override
-	public void removePlot() {
-		dao.removeSeries();
+	public void removePlot(String displayName) {
+		dao.removeSeries(displayName);
 	}
 
 	@Override
 	public void outOfLimitPerform(Instant begin, Instant end, double value) {
-		Marker cooling = new IntervalMarker(begin.getNano() * 1000, end.getNano() * 1000);
+		Marker cooling = new IntervalMarker(begin.getNano() * 1000,
+				end.getNano() * 1000);
 		cooling.setLabelOffsetType(LengthAdjustmentType.EXPAND);
 		cooling.setPaint(Color.orange);
 		cooling.setLabel("Out Of Limit");

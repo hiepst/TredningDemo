@@ -14,9 +14,9 @@ public interface DemoPanel {
 
 	JPanel getComponent();
 
-	TimeSeries addPlot(Source source, CassetteDataPoint dataPoint);
+	TimeSeries addPlot(String displayName);
 
-	void removePlot();
+	void removePlot(String displayName);
 
 	public void setDomainRange(int minutes);
 
