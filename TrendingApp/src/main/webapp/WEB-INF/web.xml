@@ -1,4 +1,4 @@
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" 
+		<web-app xmlns="http://java.sun.com/xml/ns/javaee" 
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
           http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
@@ -29,4 +29,23 @@
                    org.springframework.web.context.ContextLoaderListener
                 </listener-class>
     </listener>
+    
+     <!-- JNLP Jar Download servlet used for accessing application jar files -->
+    <servlet>
+        <servlet-name>jnlpJarDownloadServlet</servlet-name>
+        <servlet-class>com.cs.framework.JnlpDownloadServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jnlpJarDownloadServlet</servlet-name>
+        <url-pattern>*.jnlp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>JnlpDownloadServlet</servlet-name>
+    	<url-pattern>*.jar</url-pattern>
+  	</servlet-mapping>
+  
+  
 </web-app>
+
+
