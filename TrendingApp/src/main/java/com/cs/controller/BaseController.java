@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class BaseController {
 
+	private static final String VIEW_LAUNCH = "launch";
 	private static int counter = 0;
 	private static final String VIEW_INDEX = "index";
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(BaseController.class);
@@ -33,6 +34,16 @@ public class BaseController {
 		model.addAttribute("counter", ++counter);
 		logger.debug("[welcomeName] counter : {}", counter);
 		return VIEW_INDEX;
+
+	}
+
+	@RequestMapping(value = "/launch", method = RequestMethod.GET)
+	public String launchApp(ModelMap model) {
+
+		model.addAttribute(VIEW_LAUNCH, "TrendingClient");
+		logger.debug("Lauching app");
+
+		return VIEW_LAUNCH;
 
 	}
 
