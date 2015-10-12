@@ -1,13 +1,24 @@
 package com.cs.controller;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalQueries;
+
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import com.cs.domain.DataPoint;
+
+@RestController
 public class BaseController {
 
 	private static final String VIEW_LAUNCH = "launch";
@@ -15,36 +26,67 @@ public class BaseController {
 	private static final String VIEW_INDEX = "index";
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(BaseController.class);
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String welcome(ModelMap model) {
+	// @RequestMapping(value = "/", method = RequestMethod.GET)
+	// public String welcome(ModelMap model) {
+	//
+	// model.addAttribute("message", "Welcome");
+	// model.addAttribute("counter", ++counter);
+	// logger.debug("[welcome] counter : {}", counter);
+	//
+	// // Spring uses InternalResourceViewResolver and return back index.jsp
+	// return VIEW_INDEX;
+	//
+	// }
+	//
+	// @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+	// public String welcomeName(@PathVariable String name, ModelMap model) {
+	//
+	// model.addAttribute("message", "Welcome " + name);
+	// model.addAttribute("counter", ++counter);
+	// logger.debug("[welcomeName] counter : {}", counter);
+	// return VIEW_INDEX;
+	//
+	// }
+	//
+	// @RequestMapping(value = "/launch", method = RequestMethod.GET)
+	// public String launchApp(ModelMap model) {
+	//
+	// model.addAttribute(VIEW_LAUNCH, "TrendingClient");
+	// logger.debug("Lauching app");
+	//
+	// return VIEW_LAUNCH;
+	//
+	// }
 
-		model.addAttribute("message", "Welcome");
-		model.addAttribute("counter", ++counter);
-		logger.debug("[welcome] counter : {}", counter);
+	@RequestMapping(value = "/{dataPoint}/{startTime}/{endTime}", method = RequestMethod.GET)
+	public String getDatapointInRange(@PathVariable String dataPoint, @PathVariable String startTime,
+			@PathVariable String endTime, Model model) {
+		Instant start = Instant.now();
+		logger.debug("Getting data point: " + dataPoint + ", start time: " + startTime + ", end time: " + endTime);
 
-		// Spring uses InternalResourceViewResolver and return back index.jsp
-		return VIEW_INDEX;
+		model.addAttribute("dataPoint", getDataPoint(dataPoint, startTime, endTime));
 
+		Instant end = Instant.now();
+
+		return "jsonTemplate";
 	}
 
-	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
-	public String welcomeName(@PathVariable String name, ModelMap model) {
+	// @RequestMapping(value = "/{dataPoint}/{startTime}/{endTime}", method =
+	// RequestMethod.GET)
+	// public ResponseEntity<DataPoint> get(@PathVariable String dataPoint,
+	// @PathVariable String startTime,
+	// @PathVariable String endTime) {
+	//
+	// return new ResponseEntity<DataPoint>(getDataPoint(dataPoint, startTime,
+	// endTime), HttpStatus.OK);
+	// }
 
-		model.addAttribute("message", "Welcome " + name);
-		model.addAttribute("counter", ++counter);
-		logger.debug("[welcomeName] counter : {}", counter);
-		return VIEW_INDEX;
-
-	}
-
-	@RequestMapping(value = "/launch", method = RequestMethod.GET)
-	public String launchApp(ModelMap model) {
-
-		model.addAttribute(VIEW_LAUNCH, "TrendingClient");
-		logger.debug("Lauching app");
-
-		return VIEW_LAUNCH;
-
+	private DataPoint getDataPoint(String dataPoint, String startTime, String endTime) {
+		DataPoint dp = new DataPoint();
+		dp.setName(dataPoint);
+		dp.setStartTime(startTime);
+		dp.setEndTime(endTime);
+		return dp;
 	}
 
 }

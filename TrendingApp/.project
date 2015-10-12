@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
   <name>TrendingApp</name>
-  <comment>NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+  <comment>This Maven project provides functionalities to trend telemetry data 
+		for the cell science project at NASA.
+		It has a RESTful API on the back-end to support various client-side implementations.
+		In the first iteration, Java Web Start client will be used to utilize the JFreeChart library.
+		In the next iteration, a fully native web application will developed using JavaScripts 
+		frameworks such as jQuery, Node.js, Angular.js and JS plotting libraries such as 
+		Flot, DyGraph and KendoUI. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
   <projects/>
   <buildSpec>
     <buildCommand>
