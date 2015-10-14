@@ -146,6 +146,7 @@ public class DownloadRequest {
 	}
 
 	/** Converts a space delimitered string to a list of strings */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static private String[] getStringList(String str) {
 		if (str == null)
 			return null;

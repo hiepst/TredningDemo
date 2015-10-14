@@ -1,22 +1,15 @@
 package com.cs.controller;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalQueries;
 
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cs.domain.DataPoint;
+import com.cs.domain.DataPointSeries;
 
 @RestController
 public class BaseController {
@@ -81,8 +74,8 @@ public class BaseController {
 	// endTime), HttpStatus.OK);
 	// }
 
-	private DataPoint getDataPoint(String dataPoint, String startTime, String endTime) {
-		DataPoint dp = new DataPoint();
+	private DataPointSeries getDataPoint(String dataPoint, String startTime, String endTime) {
+		DataPointSeries dp = new DataPointSeries();
 		dp.setName(dataPoint);
 		dp.setStartTime(startTime);
 		dp.setEndTime(endTime);

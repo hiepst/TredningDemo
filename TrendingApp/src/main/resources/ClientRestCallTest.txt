@@ -1,0 +1,1 @@
+http://localhost:8080/TrendingApp/DataPoint/2015-10-10T10:00:00/2015-10-12T10:00:00/
