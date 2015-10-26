@@ -1,5 +1,7 @@
 package com.cs.client;
 
-public class TrendAppControllerTest {
+import junit.framework.TestCase;
+
+public class TrendAppControllerTest extends TestCase{
 
 }

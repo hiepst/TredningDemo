@@ -9,11 +9,13 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import com.cs.client.dao.CsvDataSetDao;
 import com.cs.client.dao.DatasetDao;
 import com.cs.client.util.ui.UiUtil;
 
-public class TabView extends JPanel {
+public class TabView extends JPanel implements InitializingBean {
 
 	private static final long serialVersionUID = 2015090701;
 
@@ -109,8 +111,11 @@ public class TabView extends JPanel {
 		JFrame frame = new JFrame("Tab View");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		DatasetDao dao = new CsvDataSetDao();
+		dao.setFileName("resources/ScienceData_FLIGHT.csv");
+		dao.init();
 		TabView tabView = new TabView();
-		tabView.setDao(new CsvDataSetDao("res/ScienceData_FLIGHT.csv"));
+		tabView.setDao(dao);
 		tabView.init();
 
 		frame.getContentPane().add(tabView, BorderLayout.CENTER);
@@ -128,5 +133,11 @@ public class TabView extends JPanel {
 				createAndShowGUI();
 			}
 		});
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		init();
 	}
 }

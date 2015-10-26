@@ -39,12 +39,13 @@ public class DataPointSeries {
 		Random random = new Random();
 		// Create random values for testing
 		values = new ArrayList<>();
-		for (int i = 0; i < 5; i++) {
+		// 24 hours of once per second data
+		for (int i = 0; i < 86400; i++) {
 			values.add(random.nextDouble() * 3 + 37);
 		}
 
 		// Trying to simulate delay due to large data set
-		calculatePi(1000000);
+		// calculatePi(1000000);
 	}
 
 	private double calculatePi(int N) {

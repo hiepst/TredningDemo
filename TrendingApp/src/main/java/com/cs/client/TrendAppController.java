@@ -13,6 +13,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.cs.client.dao.CsvDataSetDao;
+import com.cs.client.dao.DatasetDao;
 import com.cs.client.util.ui.UiUtil;
 import com.cs.framework.ButtonTabComponent;
 
@@ -61,8 +62,12 @@ public class TrendAppController {
 	}
 
 	public void addTab() {
+		DatasetDao dao = new CsvDataSetDao();
+		dao.setFileName("resources/ScienceData_FLIGHT.csv");
+		dao.init();
+
 		TabViewController tabViewController = new TabViewController();
-		tabViewController.setDao(new CsvDataSetDao("resources/ScienceData_FLIGHT.csv"));
+		tabViewController.setDao(dao);
 		tabViewController.init();
 
 		tabbedPane.add("Tab " + (tabCounter + 1), tabViewController.getView());

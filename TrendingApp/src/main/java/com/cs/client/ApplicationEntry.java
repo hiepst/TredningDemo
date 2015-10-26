@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.cs.client.util.ui.UiUtil;
 
 /**
@@ -47,6 +50,10 @@ public class ApplicationEntry {
 	}
 
 	public static void main(String[] args) {
+		// TODO need to find out how to load the context from a different
+		// directories
+		// ApplicationContext appContext = new
+		// ClassPathXmlApplicationContext("/resources/");
 		// Schedule a job for the event-dispatching thread:
 		// creating and showing this application's GUI.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

@@ -24,4 +24,8 @@ public interface DatasetDao {
 	void addMovingAverage(int periodCount, int skip);
 
 	void removeMovingAverage();
+
+	void setFileName(String fileName);
+
+	void init();
 }

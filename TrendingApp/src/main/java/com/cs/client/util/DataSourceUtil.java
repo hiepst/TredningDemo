@@ -1,12 +1,12 @@
 package com.cs.client.util;
 
-import com.cs.client.CassetteDataPoint;
-import com.cs.client.Source;
+import com.cs.client.enumType.Cassette;
+import com.cs.client.enumType.CassetteDataPoint;
 
 public class DataSourceUtil {
 	private static final String NAME_SEPARATOR = "-";
 
-	public static String getDisplayName(Source source, CassetteDataPoint dataPoint) {
+	public static String getDisplayName(Cassette source, CassetteDataPoint dataPoint) {
 		if (source == null) {
 			return dataPoint.toString();
 		}
@@ -23,10 +23,10 @@ public class DataSourceUtil {
 		return sb.toString();
 	}
 
-	public static Source getSource(String fromName) {
+	public static Cassette getSource(String fromName) {
 		String[] names = fromName.split(NAME_SEPARATOR);
 		String sourceName = names[0];
-		for (Source s : Source.values()) {
+		for (Cassette s : Cassette.values()) {
 			if (s.toString().equals(sourceName.trim())) {
 				return s;
 			}
@@ -51,7 +51,7 @@ public class DataSourceUtil {
 	}
 
 	public static void main(String[] args) {
-		Source source = getSource("Cassette 2");
+		Cassette source = getSource("Cassette 2");
 		System.out.println(source);
 
 		source = getSource("Cassette 3-Hot 1 Temp");
@@ -60,14 +60,14 @@ public class DataSourceUtil {
 		source = getSource("Cassette 4   - something");
 		System.out.println(source);
 
-		CassetteDataPoint cassetteDataPoint = getCassetteDataPoint(CassetteDataPoint.HOT1_TEMPERATURE.toString());
+		CassetteDataPoint cassetteDataPoint = getCassetteDataPoint(CassetteDataPoint.HOT1_TEMP.toString());
 		System.out.println(cassetteDataPoint);
 
-		cassetteDataPoint = getCassetteDataPoint("something-" + CassetteDataPoint.HOT2_TEMPERATURE.toString());
+		cassetteDataPoint = getCassetteDataPoint("something-" + CassetteDataPoint.HOT2_TEMP.toString());
 		System.out.println(cassetteDataPoint);
 
 		cassetteDataPoint = getCassetteDataPoint(
-				Source.CAS1.toString() + " - " + CassetteDataPoint.COLD1_TEMPERATURE.toString());
+				Cassette.CAS1.toString() + " - " + CassetteDataPoint.COLD1_TEMP.toString());
 		System.out.println(cassetteDataPoint);
 
 	}

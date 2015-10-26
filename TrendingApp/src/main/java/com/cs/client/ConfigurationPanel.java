@@ -22,25 +22,27 @@ import javax.swing.SpinnerListModel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import com.cs.client.enumType.Cassette;
+import com.cs.client.enumType.CassetteDataPoint;
+import com.cs.client.enumType.DurationValue;
+import com.cs.client.enumType.Locker;
 import com.cs.client.util.ui.UiUtil;
 
 public class ConfigurationPanel extends JPanel {
 
 	private static final long serialVersionUID = 2015090701;
 
-	private JComboBox<Source> sourceCombo;
+	private JComboBox<Locker> lockerCombo;
 
-	public JComboBox<Source> getSourceCombo() {
-		return sourceCombo;
-	}
+	private JComboBox<Cassette> cassetteCombo;
 
 	private JComboBox<CassetteDataPoint> dataPointCombo;
 
 	private JButton startButton;
 
-	private JButton addPlotButton;
+	private JButton addSeriesButton;
 
-	private JButton removePlotButton;
+	private JButton removeSeriesButton;
 
 	private JButton stopButton;
 
@@ -66,28 +68,40 @@ public class ConfigurationPanel extends JPanel {
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
+		c.ipady = 5;
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		add(new JLabel("Source:"), c);
+		add(new JLabel("Locker:"), c);
 
 		c.gridx = 0;
 		c.gridy++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		// Collections.sort(sourceList);
-		sourceCombo = new JComboBox<Source>(Source.values());
-		add(sourceCombo, c);
+		lockerCombo = new JComboBox<Locker>(Locker.values());
+		add(lockerCombo, c);
 
 		c.gridx = 0;
 		c.gridy++;
+		c.gridwidth = 1;
+		add(new JLabel("Cassette:"), c);
+
+		c.gridx = 0;
+		c.gridy++;
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		cassetteCombo = new JComboBox<Cassette>(Cassette.values());
+		add(cassetteCombo, c);
+
+		c.gridx = 0;
+		c.gridy++;
+		c.gridwidth = 1;
 		add(new JLabel("Data Point:"), c);
 
 		c.gridx = 0;
 		c.gridy++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		// Collections.sort(dataPointList);
 		dataPointCombo = new JComboBox<CassetteDataPoint>(CassetteDataPoint.values());
 		add(dataPointCombo, c);
 
@@ -125,7 +139,7 @@ public class ConfigurationPanel extends JPanel {
 
 		c.gridx = 0;
 		c.gridy++;
-		add(new JLabel("Duration:"), c);
+		add(new JLabel("Display Window:"), c);
 
 		c.gridx = 0;
 		c.gridy++;
@@ -175,24 +189,32 @@ public class ConfigurationPanel extends JPanel {
 
 		c.gridx = 0;
 		c.gridy++;
-		addPlotButton = new JButton("Add Plot");
-		add(addPlotButton, c);
+		addSeriesButton = new JButton("Add Series");
+		add(addSeriesButton, c);
 
 		c.gridx = 1;
-		removePlotButton = new JButton("Remove Plot");
-		add(removePlotButton, c);
+		removeSeriesButton = new JButton("Remove Series");
+		add(removeSeriesButton, c);
 	}
 
 	public JCheckBox getShowAverageCheckbox() {
 		return showAverageCheckbox;
 	}
 
-	public JButton getRemovePlotButton() {
-		return removePlotButton;
+	public JComboBox<Locker> getLockerCombo() {
+		return lockerCombo;
 	}
 
-	public JButton getAddPlotButton() {
-		return addPlotButton;
+	public JComboBox<Cassette> getCassetteCombo() {
+		return cassetteCombo;
+	}
+
+	public JButton getAddSeriesButton() {
+		return addSeriesButton;
+	}
+
+	public JButton getRemoveSeriesButton() {
+		return removeSeriesButton;
 	}
 
 	public JButton getStartButton() {

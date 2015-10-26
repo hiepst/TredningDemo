@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,17 +24,25 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.jfree.data.time.TimeSeries;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.client.RestTemplate;
 
 import com.cs.client.dao.CsvDataSetDao;
 import com.cs.client.dao.DatasetDao;
+import com.cs.client.enumType.Cassette;
+import com.cs.client.enumType.CassetteDataPoint;
+import com.cs.client.enumType.DurationValue;
 import com.cs.client.util.DataSourceUtil;
 import com.cs.client.util.ui.UiUtil;
 import com.cs.domain.DataPointSeries;
 
-public class TabViewController {
+public class TabViewController implements InitializingBean {
 
 	private TabView tabView;
+
+	public void setTabView(TabView tabView) {
+		this.tabView = tabView;
+	}
 
 	private ConfigurationPanel configurationPanel;
 
@@ -70,8 +80,8 @@ public class TabViewController {
 		configureShowDifferenceCheckbox();
 		configureShowAverageCheckbox();
 		configureDurartionSpinner();
-		confgureAddPlotButton();
-		configureRemovePlotButton();
+		confgureAddSeriesButton();
+		configureRemoveSeriesButton();
 		configureShowLimitCheckbox();
 		configureRealTimeCheckBox();
 	}
@@ -98,12 +108,12 @@ public class TabViewController {
 		});
 	}
 
-	private void configureRemovePlotButton() {
+	private void configureRemoveSeriesButton() {
 		JTree tree = seriesSelectionView.getTree();
 
-		JButton removePlotButton = configurationPanel.getRemovePlotButton();
-		removePlotButton.setEnabled(false);
-		removePlotButton.addActionListener(new ActionListener() {
+		JButton removeSeriesButton = configurationPanel.getRemoveSeriesButton();
+		removeSeriesButton.setEnabled(false);
+		removeSeriesButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -129,7 +139,7 @@ public class TabViewController {
 				boolean enabled = newLeadSelectionPath != null
 						&& newLeadSelectionPath.getLastPathComponent() != seriesSelectionView.getRootNode();
 
-				removePlotButton.setEnabled(enabled);
+				removeSeriesButton.setEnabled(enabled);
 			}
 		});
 	}
@@ -222,22 +232,31 @@ public class TabViewController {
 		params.put("startTime", "2015-01-01T02:00:00");
 		params.put("endTime", "2015-12-01T02:00:00");
 
-		RestTemplate restTemplate = new RestTemplate();
-		DataPointSeries result = restTemplate.getForObject(uri, DataPointSeries.class, params);
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
 
-		System.out.println(result.toString());
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				RestTemplate restTemplate = new RestTemplate();
+				DataPointSeries result = restTemplate.getForObject(uri, DataPointSeries.class, params);
+
+				System.out.println(result.toString());
+			}
+		}, 1000, 1000);
+
 	}
 
-	private void confgureAddPlotButton() {
-		JButton addPlotButton = configurationPanel.getAddPlotButton();
-		addPlotButton.addActionListener(new ActionListener() {
+	private void confgureAddSeriesButton() {
+		JButton addSeriesButton = configurationPanel.getAddSeriesButton();
+		addSeriesButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				testRestBackend();
 
 				// TODO Auto-generated method stub
-				Source selectedSource = (Source) configurationPanel.getSourceCombo().getSelectedItem();
+				Cassette selectedSource = (Cassette) configurationPanel.getCassetteCombo().getSelectedItem();
 				CassetteDataPoint selectedDataPoint = (CassetteDataPoint) configurationPanel.getDataPointCombo()
 						.getSelectedItem();
 				TimeSeries series = trendPanel
@@ -251,27 +270,21 @@ public class TabViewController {
 				seriesSelectionView.addObject(DataSourceUtil.getDisplayName(selectedSource, selectedDataPoint));
 
 				switch (selectedDataPoint) {
-				case HOT1_TEMPERATURE:
+				case HOT1_TEMP:
 					addHot1LimitMarkers();
 					break;
-				case HOT2_TEMPERATURE:
+				case HOT2_TEMP:
 					// addHot2LimitMarkers();
 					addHot1LimitMarkers();
 					break;
-				case COLD1_TEMPERATURE:
+				case COLD1_TEMP:
 					// addCold1LimitMarkers();
 					break;
-				case COLD2_TEMPERATURE:
-					// addCold2LimitMarkers();
+				case HUMIDITY:
 					break;
-				case COLD_SET_POINT:
-					// Ignore
-					break;
-				case HOT1_SET_POINT:
-					// Ignore
+				case PUMP_CURRENT:
 					break;
 				default:
-					// Ignore
 					break;
 				}
 
@@ -357,14 +370,17 @@ public class TabViewController {
 		JFrame frame = new JFrame("Tab View Controller");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		DatasetDao dao = new CsvDataSetDao();
+		dao.setFileName("resources/ScienceData_FLIGHT.csv");
+		dao.init();
+
 		TabViewController controller = new TabViewController();
-		controller.setDao(new CsvDataSetDao("res/ScienceData_FLIGHT.csv"));
+		controller.setDao(dao);
 		controller.init();
 
 		frame.getContentPane().add(controller.getView(), BorderLayout.CENTER);
 
 		// Display the window.
-
 		UiUtil.centerAndShow(frame);
 	}
 
@@ -377,5 +393,11 @@ public class TabViewController {
 				createAndShowGUI();
 			}
 		});
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		init();
 	}
 }

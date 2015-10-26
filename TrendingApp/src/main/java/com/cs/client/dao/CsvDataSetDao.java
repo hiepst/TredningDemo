@@ -10,8 +10,8 @@ import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
-import com.cs.client.CassetteDataPoint;
 import com.cs.client.OutOfLimitListener;
+import com.cs.client.enumType.CassetteDataPoint;
 import com.cs.client.util.DataSourceUtil;
 
 public class CsvDataSetDao implements DatasetDao {
@@ -56,7 +56,15 @@ public class CsvDataSetDao implements DatasetDao {
 
 	private int avgSkip;
 
-	public CsvDataSetDao(String fileName) {
+	private String fileName;
+
+	@Override
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	@Override
+	public void init() {
 		csvReader = new CSVReader(fileName);
 		hot1TempData = csvReader.getDoubleData(CAS1_HOT1_TEMP_INDEX, MAX_DATA_ITEMS);
 		hot2TempData = csvReader.getDoubleData(CAS1_HOT2_TEMP_INDEX, MAX_DATA_ITEMS);
@@ -124,27 +132,12 @@ public class CsvDataSetDao implements DatasetDao {
 		}
 
 		switch (dataPoint) {
-		case COLD1_TEMPERATURE:
+		case COLD1_TEMP:
 			value = NOMINAL_COLD_1_TEMP + getRandomDeviation();
 			timeSeries.add(new Second(), value);
 			break;
 
-		case COLD2_TEMPERATURE:
-			value = NOMINAL_COLD_2_TEMP + getRandomDeviation();
-			timeSeries.add(new Second(), value);
-			break;
-
-		case COLD_SET_POINT:
-			value = 5;
-			timeSeries.add(new Second(), value);
-			break;
-
-		case HOT1_SET_POINT:
-			value = NOMINAL_HOT_1_SET_POINT;
-			timeSeries.add(new Second(), value);
-			break;
-
-		case HOT1_TEMPERATURE:
+		case HOT1_TEMP:
 			value = hot1TempData[dataCount];
 			System.out.println("Item count = " + dataCount + " - Value = " + value);
 
@@ -163,11 +156,17 @@ public class CsvDataSetDao implements DatasetDao {
 			timeSeries.add(new Second(), value);
 			break;
 
-		case HOT2_TEMPERATURE:
+		case HOT2_TEMP:
 			value = hot2TempData[dataCount];
 			System.out.println("Item count = " + dataCount + " - Value = " + value);
 
 			timeSeries.add(new Second(), value);
+			break;
+		case HUMIDITY:
+			break;
+		case PUMP_CURRENT:
+			break;
+		default:
 			break;
 		}
 
