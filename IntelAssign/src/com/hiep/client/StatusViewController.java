@@ -10,25 +10,19 @@ import javax.swing.SwingUtilities;
 
 import com.hiep.common.Room;
 import com.hiep.common.util.UiUtil;
+import com.hiep.server.RoomManager;
 
 public class StatusViewController {
 
-	private static final int TOTAL_ROOMS = 34;
-	private List<Room> rooms;
+	private RoomManager roomManager;
 
 	private StatusView view;
 
 	public void init() {
-		rooms = new ArrayList<>();
-
-		for (int i = 1; i <= TOTAL_ROOMS; i++) {
-			Room r = new Room();
-			r.setId(i);
-			rooms.add(r);
-		}
+		List<Room> rooms = new ArrayList<>(roomManager.getAll());
 
 		view = new StatusView();
-		view.setController(this);
+		view.setRooms(rooms);
 		view.init();
 		sizeAllColumnToFitData();
 	}
@@ -39,7 +33,6 @@ public class StatusViewController {
 
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
 					sizeAllColumnToFitData();
 				}
 			});
@@ -48,11 +41,11 @@ public class StatusViewController {
 	}
 
 	public int getTotalRooms() {
-		return rooms.size();
+		return view.getRooms().size();
 	}
 
 	public List<Room> getRooms() {
-		return rooms;
+		return view.getRooms();
 	}
 
 	public StatusView getView() {
@@ -64,7 +57,6 @@ public class StatusViewController {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				showView();
 			}
 		});
@@ -72,6 +64,7 @@ public class StatusViewController {
 
 	private static void showView() {
 		StatusViewController controller = new StatusViewController();
+		controller.setRoomManager(new RoomManager());
 		controller.init();
 
 		JFrame frame = new JFrame("Intel Assignment");
@@ -80,7 +73,10 @@ public class StatusViewController {
 		statusView.setPreferredSize(new Dimension(800, 650));
 
 		frame.getContentPane().add(statusView, BorderLayout.CENTER);
-		frame.pack();
-		frame.setVisible(true);
+		UiUtil.centerAndShow(frame);
+	}
+
+	public void setRoomManager(RoomManager roomManager) {
+		this.roomManager = roomManager;
 	}
 }

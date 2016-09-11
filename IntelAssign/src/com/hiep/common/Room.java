@@ -20,7 +20,7 @@ public class Room {
 
 	private boolean possibleDc;
 
-	private String nurse;
+	private String nurseFirstName;
 
 	public int getId() {
 		return id;
@@ -94,12 +94,12 @@ public class Room {
 		this.patientLastName = patientLastName;
 	}
 
-	public String getNurse() {
-		return nurse;
+	public String getNurseFirstName() {
+		return nurseFirstName;
 	}
 
-	public void setNurse(String nurse) {
-		this.nurse = nurse;
+	public void setNurseFirstName(String nurseFirstName) {
+		this.nurseFirstName = nurseFirstName;
 	}
 
 }

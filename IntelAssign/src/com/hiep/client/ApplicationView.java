@@ -18,8 +18,8 @@ public class ApplicationView extends JPanel {
 	private JMenu editMenu;
 	private JMenu helpMenu;
 
-	private JMenuItem roomItem;
-	private JMenuItem aboutItem;
+	private JMenuItem exitMenuItem;
+	private JMenuItem aboutMenuItem;
 
 	private JPanel mainPanel;
 
@@ -30,11 +30,11 @@ public class ApplicationView extends JPanel {
 		fileMenu = new JMenu("File");
 		editMenu = new JMenu("Edit");
 		helpMenu = new JMenu("Help");
-		aboutItem = new JMenuItem("About");
-		helpMenu.add(aboutItem);
+		aboutMenuItem = new JMenuItem("About");
+		helpMenu.add(aboutMenuItem);
 
-		roomItem = new JMenuItem("Room...");
-		editMenu.add(roomItem);
+		exitMenuItem = new JMenuItem("Exit");
+		fileMenu.add(exitMenuItem);
 
 		menuBar = new JMenuBar();
 		menuBar.add(fileMenu);
@@ -62,6 +62,14 @@ public class ApplicationView extends JPanel {
 
 	public JButton getGenerateAssignmentButton() {
 		return generateAssignmentButton;
+	}
+
+	public JMenuItem getExitMenuItem() {
+		return exitMenuItem;
+	}
+
+	public JMenuItem getAboutMenuItem() {
+		return aboutMenuItem;
 	}
 
 }
