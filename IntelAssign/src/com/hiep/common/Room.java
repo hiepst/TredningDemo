@@ -1,5 +1,7 @@
 package com.hiep.common;
 
+import java.util.List;
+
 public class Room {
 
 	private int id;
@@ -100,6 +102,32 @@ public class Room {
 
 	public void setNurseFirstName(String nurseFirstName) {
 		this.nurseFirstName = nurseFirstName;
+	}
+
+	public boolean hasPatientWithTheSameLastName(List<Room> rooms) {
+		for (Room r : rooms) {
+			if (id == r.getId()) {
+				continue;
+			}
+			if (patientLastName.equalsIgnoreCase(r.getPatientLastName())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isWithinAcceptableDistance(List<Room> rooms) {
+		for (Room r : rooms) {
+			if (id == r.getId()) {
+				continue;
+			}
+			if (patientLastName.equalsIgnoreCase(r.getPatientLastName())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

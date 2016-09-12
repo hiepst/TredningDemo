@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import com.hiep.common.PatientType;
 import com.hiep.common.Room;
 import com.hiep.common.util.UiUtil;
 import com.hiep.server.RoomManager;
@@ -48,6 +49,16 @@ public class StatusViewController {
 		return view.getRooms();
 	}
 
+	public List<Room> getOccupiedRooms() {
+		List<Room> occupied = new ArrayList<>();
+		for (Room r : view.getRooms()) {
+			if (r.getPatientType().equals(PatientType.NONE) == false) {
+				occupied.add(r);
+			}
+		}
+		return occupied;
+	}
+
 	public StatusView getView() {
 		return view;
 	}
@@ -78,5 +89,9 @@ public class StatusViewController {
 
 	public void setRoomManager(RoomManager roomManager) {
 		this.roomManager = roomManager;
+	}
+
+	public int getTotalNurses() {
+		return view.getTotalNurses();
 	}
 }
